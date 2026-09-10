@@ -1800,7 +1800,7 @@ document.getElementById("btn-confirmar-observacion").addEventListener("click", f
 // Cada ventana emergente que se abre recibe un nivel (z-index) más alto que la anterior,
 // para que SIEMPRE quede por delante de las que ya estaban abiertas, y nunca se quede
 // "escondida" detrás de otra teniendo que cerrar la de delante para verla.
-var nivelApilamientoModal = 60;
+var nivelApilamientoModal = 250; // por encima de las pantallas de control de dispositivo (z-index:200)
 function abrir(id){
   var el = document.getElementById(id);
   nivelApilamientoModal++;
