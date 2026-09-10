@@ -1255,6 +1255,7 @@ function mostrarPantallaDispositivo(cual){
 }
 
 var estadoDispositivoPrevio = undefined; // undefined=aún no lo sabemos, true/false=último estado visto en esta sesión
+var suprimirModalCodigoUnaVez = false; // evita volver a mostrar el código justo después de usarlo para recuperar acceso
 
 function generarCodigoRecuperacion(){
   var chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // sin 0/O ni 1/I, para que no se confundan al copiarlo a mano
@@ -1273,11 +1274,13 @@ function iniciarControlDispositivo(uid){
     var d = doc.data();
     if(d.autorizado){
       // Si justo acaba de pasar de "no autorizado" a "autorizado" en esta sesión,
-      // mostramos su código de recuperación (si tiene) para que lo guarde.
-      if(estadoDispositivoPrevio === false && d.codigoRecuperacion){
+      // mostramos su código de recuperación (si tiene) para que lo guarde — salvo que
+      // acabe de recuperarlo con ese mismo código, porque entonces ya lo conoce.
+      if(estadoDispositivoPrevio === false && d.codigoRecuperacion && !suprimirModalCodigoUnaVez){
         document.getElementById("texto-codigo-recuperacion").textContent = d.codigoRecuperacion;
         abrir("modal-codigo-recuperacion");
       }
+      suprimirModalCodigoUnaVez = false;
       estadoDispositivoPrevio = true;
       mostrarPantallaDispositivo(null);
     } else if(d.fechaAutorizacion){
@@ -1311,6 +1314,7 @@ document.getElementById("btn-usar-codigo-recuperacion").addEventListener("click"
   if(!codigo){ toast("Escribe el código de recuperación"); return; }
   var uidActual = firebase.auth().currentUser.uid;
   var codigoRef = db.collection("codigosRecuperacion").doc(codigo);
+  suprimirModalCodigoUnaVez = true;
   conCarga(function(){
     return codigoRef.get().then(function(doc){
       if(!doc.exists){
@@ -1336,11 +1340,12 @@ document.getElementById("btn-usar-codigo-recuperacion").addEventListener("click"
       }).then(function(){ return {ok:true}; });
     });
   }).then(function(resultado){
-    if(!resultado) return; // ya se mostró un aviso de error genérico dentro de conCarga
+    if(!resultado){ suprimirModalCodigoUnaVez = false; return; } // ya se mostró un aviso de error genérico dentro de conCarga
     if(resultado.ok){
       cerrar("modal-usar-codigo-recuperacion");
       toast("Acceso recuperado correctamente");
     } else {
+      suprimirModalCodigoUnaVez = false;
       toast("Ese código no es válido");
     }
   });
