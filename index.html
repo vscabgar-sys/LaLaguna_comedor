@@ -90,6 +90,31 @@
   .inicio-wrap{
     flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:34px;
   }
+  .inicio-layout{flex:1; display:flex; flex-direction:row; min-height:0;}
+  .inicio-sidebar{
+    width:220px; flex-shrink:0; padding:24px 16px; display:flex; flex-direction:column; gap:12px;
+    border-right:1px solid var(--line); overflow-y:auto;
+  }
+  .inicio-sidebar h3{
+    font-family:Georgia,serif; font-size:14px; color:var(--ink-soft); margin:0 0 4px 0;
+    text-transform:uppercase; letter-spacing:0.5px;
+  }
+  .sidebar-etapa{
+    border-radius:12px; padding:12px 14px; border-left:5px solid var(--ink-soft); background:var(--paper-soft);
+  }
+  .sidebar-etapa .nombre{font-weight:600; font-size:14px; margin-bottom:4px;}
+  .sidebar-etapa .cifra{font-size:12.5px; color:var(--ink-soft); display:flex; justify-content:space-between;}
+  .sidebar-etapa .cifra b{color:var(--ink); font-size:14px;}
+  .sidebar-etapa.infantil{border-left-color:var(--infantil);}
+  .sidebar-etapa.infantil .nombre{color:var(--infantil);}
+  .sidebar-etapa.primaria{border-left-color:var(--primaria);}
+  .sidebar-etapa.primaria .nombre{color:var(--primaria);}
+  .sidebar-etapa.secundaria{border-left-color:var(--secundaria);}
+  .sidebar-etapa.secundaria .nombre{color:var(--secundaria);}
+  .sidebar-etapa.enclave{border-left-color:var(--enclave);}
+  .sidebar-etapa.enclave .nombre{color:var(--enclave);}
+  .sidebar-etapa.total{border-left-color:var(--pine-dark); background:#EAF1F6;}
+  .sidebar-etapa.total .nombre{color:var(--pine-dark);}
   .inicio-titulo{
     text-align:center; color:var(--pine-dark);
   }
@@ -282,6 +307,42 @@
   .chip-fecha-pendiente button{background:none; border:none; color:var(--accent); cursor:pointer; font-weight:bold; font-size:14px; padding:0;}
   .row.extraordinario{border-color:var(--enclave); background:var(--enclave-bg); border-width:2px;}
   .row.extraordinario .status{color:var(--enclave); font-weight:600;}
+  .aviso-pendiente{
+    background:#FBEDED; border:2px solid var(--accent); border-radius:12px; padding:14px 16px; margin-bottom:16px;
+  }
+  .aviso-pendiente h3{margin:0 0 8px 0; font-size:15px; color:var(--accent-dark); font-family:Georgia,serif;}
+  .aviso-pendiente ul{margin:0 0 8px 0; padding-left:20px; color:var(--accent-dark); font-weight:600;}
+  .aviso-pendiente ul span{color:var(--ink-soft); font-weight:400;}
+  .aviso-pendiente p{margin:0; font-size:13px; color:var(--ink-soft);}
+  .fila-botones-principales{display:flex; align-items:center; gap:26px; flex-wrap:wrap; justify-content:center;}
+  .tarjeta-pendientes-hoy{
+    background:var(--accent); color:#fff; text-align:center; padding:24px 32px; cursor:pointer;
+    border-radius:20px; box-shadow:0 10px 30px rgba(179,63,63,0.35); min-width:200px;
+  }
+  .tarjeta-pendientes-hoy .tph-titulo{font-family:Georgia,serif; font-size:19px; font-weight:bold;}
+  .tarjeta-pendientes-hoy .tph-fecha{font-size:13.5px; margin-top:6px; opacity:0.92;}
+  .tarjeta-pendientes-hoy:active{transform:scale(0.98);}
+  .hist-pend-item{
+    background:#FBEDED; border:2px solid var(--accent); border-radius:12px; padding:14px 16px; margin-bottom:12px;
+  }
+  .hist-pend-item .cabecera{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px;}
+  .hist-pend-item .fecha-badge{
+    background:var(--accent); color:#fff; font-weight:700; font-size:13px; padding:3px 10px; border-radius:20px;
+  }
+  .hist-pend-item h4{margin:0; font-size:15px; color:var(--accent-dark); font-family:Georgia,serif;}
+  .hist-pend-item ul{margin:6px 0; padding-left:20px; color:var(--accent-dark); font-weight:600;}
+  .hist-pend-item .dnis{font-size:12.5px; color:var(--ink-soft); margin-top:6px; border-top:1px dashed var(--accent); padding-top:6px;}
+  .hist-pend-item .dnis strong{color:var(--ink);}
+  .hist-pend-item{cursor:pointer;}
+  .hist-pend-item:active{transform:scale(0.995);}
+  .hist-pend-item .toca-completar{
+    margin-top:8px; font-size:12.5px; font-weight:700; color:var(--pine-dark);
+  }
+  .linea-dnis{
+    background:var(--paper-soft); border:1px solid var(--line); border-radius:8px;
+    padding:8px 12px; font-size:13px; color:var(--ink-soft); margin-bottom:14px;
+  }
+  .linea-dnis strong{color:var(--ink);}
   .bloque-resumen{border-radius:12px; padding:14px 16px; margin-bottom:14px;}
   .bloque-resumen h3{margin:0 0 8px 0; font-size:15px; font-family:Georgia,serif;}
   .bloque-resumen ul{margin:0; padding-left:20px; font-size:14px; max-height:260px; overflow-y:auto;}
@@ -331,6 +392,23 @@
     box-shadow:0 20px 60px rgba(0,0,0,0.25);
   }
   .modal.modal-wide{max-width:820px;}
+  .modal.modal-fullscreen{max-width:100vw; width:100vw; max-height:100vh; height:100vh; border-radius:0;}
+  #modal-administrador{padding:0;}
+  .admin-head{background:var(--pine-dark); color:#fff; flex-shrink:0;}
+  .admin-head h2{font-family:Georgia,serif;}
+  .admin-head .x{color:#fff;}
+  .admin-tabs{
+    display:flex; gap:4px; overflow-x:auto; padding:0 20px; background:var(--paper-soft);
+    border-bottom:2px solid var(--line); flex-shrink:0;
+  }
+  .admin-tab{
+    background:none; border:none; padding:14px 18px; cursor:pointer; font-size:14px; font-weight:600;
+    color:var(--ink-soft); white-space:nowrap; display:flex; align-items:center; gap:7px;
+    border-bottom:3px solid transparent; margin-bottom:-2px;
+  }
+  .admin-tab .icono{font-size:16px;}
+  .admin-tab.activo{color:var(--pine-dark); border-bottom-color:var(--pine-dark);}
+  .admin-body{flex:1; overflow-y:auto; padding:26px 24px; max-width:1100px; margin:0 auto; width:100%;}
   .modal-head{
     padding:18px 22px; border-bottom:1px solid var(--line);
     display:flex; align-items:center; justify-content:space-between;
@@ -437,6 +515,13 @@
   @media (max-width:760px){
     .columnas-etapas-hoy{flex-direction:column;}
     .columna-etapa-hoy .tarjeta-grupo-hoy{width:auto;}
+    .inicio-layout{flex-direction:column;}
+    .inicio-sidebar{
+      width:auto; flex-direction:row; flex-wrap:wrap; border-right:none; border-bottom:1px solid var(--line);
+      padding:14px 16px; gap:8px; justify-content:center;
+    }
+    .inicio-sidebar h3{width:100%; text-align:center;}
+    .sidebar-etapa{flex:1 1 130px; padding:8px 10px;}
   }
 
   /* Adaptación a pantallas pequeñas */
@@ -526,6 +611,9 @@
     <p>Es la primera vez que se abre la app en este dispositivo. Ponle un nombre para que el administrador lo reconozca (ej: "Tablet cocina", "Portátil dirección") y solicita el acceso.</p>
     <input type="text" id="in-nombre-dispositivo" placeholder="Nombre de este dispositivo">
     <button id="btn-solicitar-dispositivo">Solicitar acceso</button>
+    <p style="margin-top:22px; border-top:1px solid rgba(255,255,255,0.2); padding-top:14px;">
+      <a href="#" id="link-codigo-recuperacion-1" style="color:#CBD5CC; font-size:13px;">¿Ya tenías acceso y tienes un código de recuperación?</a>
+    </p>
   </div>
 </div>
 
@@ -537,6 +625,9 @@
     <p style="margin-top:22px; border-top:1px solid rgba(255,255,255,0.2); padding-top:14px;">
       <a href="#" id="link-primer-dispositivo" style="color:#CBD5CC; font-size:13px;">¿Es este el primer dispositivo de la app? Actívalo con la clave de administrador</a>
     </p>
+    <p style="margin-top:10px;">
+      <a href="#" id="link-codigo-recuperacion-2" style="color:#CBD5CC; font-size:13px;">¿Ya tenías acceso y tienes un código de recuperación?</a>
+    </p>
   </div>
 </div>
 
@@ -544,6 +635,36 @@
   <div class="caja">
     <h2>Acceso revocado</h2>
     <p>El administrador ha revocado el acceso de este dispositivo (<strong id="revocado-nombre-dispositivo"></strong>). Si es un error, pídele que lo vuelva a autorizar desde <strong>Administrador → Dispositivos</strong>.</p>
+  </div>
+</div>
+
+<!-- MODAL: mostrar el código de recuperación recién generado -->
+<div class="overlay hidden" id="modal-codigo-recuperacion">
+  <div class="modal">
+    <div class="modal-head"><h2>Guarda tu código de recuperación</h2><button class="x" data-close>&times;</button></div>
+    <div class="modal-body">
+      <p style="margin-top:0; color:var(--ink-soft);">Si el navegador "olvida" este dispositivo más adelante (pasa a veces, sobre todo en Firefox o al borrar datos del navegador), podrás recuperar el acceso al instante con este código, sin esperar a que el administrador te autorice de nuevo.</p>
+      <div style="text-align:center; background:var(--paper-soft); border:2px dashed var(--pine-dark); border-radius:12px; padding:20px; font-size:28px; font-weight:bold; letter-spacing:4px; color:var(--pine-dark); font-family:monospace;" id="texto-codigo-recuperacion"></div>
+      <p style="font-size:13px; color:var(--ink-soft);">Apúntalo o hazle una foto. No hace falta que se lo digas a nadie más — es solo para este dispositivo.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-primary" data-close>Ya lo he guardado</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: introducir un código de recuperación -->
+<div class="overlay hidden" id="modal-usar-codigo-recuperacion">
+  <div class="modal">
+    <div class="modal-head"><h2>Recuperar acceso</h2><button class="x" data-close>&times;</button></div>
+    <div class="modal-body">
+      <p style="margin-top:0; color:var(--ink-soft);">Introduce el código de recuperación que guardaste cuando este dispositivo fue autorizado por primera vez.</p>
+      <div class="field"><label>Código</label><input type="text" id="in-codigo-recuperacion" placeholder="Ej: A7K9P2M4QX" style="text-transform:uppercase;"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close>Cancelar</button>
+      <button class="btn btn-primary" id="btn-usar-codigo-recuperacion">Recuperar acceso</button>
+    </div>
   </div>
 </div>
 
@@ -564,14 +685,23 @@
   </div>
 
   <div class="vista" id="vista-inicio">
-    <div class="inicio-wrap">
+    <div class="inicio-layout">
+      <div class="inicio-sidebar" id="inicio-sidebar"></div>
+      <div class="inicio-wrap">
       <div class="inicio-titulo">
         <div class="inicio-titulo-linea1">Servicio de Comedor</div>
         <div class="inicio-titulo-linea2">Echeyde La Laguna</div>
       </div>
-      <button class="btn-gigante" id="btn-ir-pasar-lista">Pasar Lista</button>
+      <div class="fila-botones-principales">
+        <button class="btn-gigante" id="btn-ir-pasar-lista">Pasar Lista</button>
+        <div class="tarjeta-pendientes-hoy hidden" id="banner-pendientes-hoy">
+          <div class="tph-titulo">⚠ Grupos pendientes hoy</div>
+          <div class="tph-fecha" id="banner-pendientes-hoy-fecha"></div>
+        </div>
+      </div>
       <div class="inicio-secundarios">
         <button class="btn-admin-inicio" id="btn-abrir-administrador">🔒 Administrador</button>
+      </div>
       </div>
     </div>
   </div>
@@ -629,7 +759,10 @@
             <option value="AulaEnclave">AE + TVA</option>
           </select>
         </div>
-        <div class="field"><label>Grupo o curso</label><input type="text" id="in-grupo" placeholder="Ej: 3ºA"></div>
+        <div class="field"><label>Grupo o curso</label>
+          <input type="text" id="in-grupo" placeholder="Ej: 3ºA" list="lista-grupos-existentes" autocomplete="off">
+          <datalist id="lista-grupos-existentes"></datalist>
+        </div>
       </div>
       <div class="field"><label>Estado (inscrito en el comedor)</label>
         <select id="in-estado">
@@ -713,6 +846,7 @@
   <div class="modal modal-wide">
     <div class="modal-head"><h2>Resumen del registro</h2><button class="x" data-close>&times;</button></div>
     <div class="modal-body">
+      <div id="resumen-sesion-pendientes" class="hidden"></div>
       <div class="report-summary" id="resumen-sesion-cifras"></div>
       <div id="resumen-sesion-bloques"></div>
     </div>
@@ -732,7 +866,7 @@
       <div class="field"><label>DNI</label><input type="text" id="in-dni" placeholder="12345678A"></div>
     </div>
     <div class="modal-foot">
-      <button class="btn" data-close>Cancelar</button>
+      <button class="btn" id="btn-volver-dni">← Atrás</button>
       <button class="btn btn-primary" id="btn-aceptar-dni">Aceptar</button>
     </div>
   </div>
@@ -767,17 +901,18 @@
 
 <!-- MODAL: panel Administrador -->
 <div class="overlay hidden" id="modal-administrador">
-  <div class="modal modal-wide">
-    <div class="modal-head"><h2>Administrador</h2><button class="x" data-close>&times;</button></div>
+  <div class="modal modal-fullscreen">
+    <div class="modal-head admin-head"><h2>⚙ Panel de Administrador</h2><button class="x" data-close>&times;</button></div>
     <div id="admin-resumen-dia" class="admin-resumen-dia"></div>
-    <div class="modal-body">
-      <div style="display:flex; gap:8px; margin-bottom:16px;">
-        <button class="btn btn-primary" id="tab-admin-alumnos">Alumnos</button>
-        <button class="btn" id="tab-admin-registros">Registros de un día</button>
-        <button class="btn" id="tab-admin-informes">Informes</button>
-        <button class="btn" id="tab-admin-extraordinarios">Accesos Extraordinarios</button>
-        <button class="btn" id="tab-admin-dispositivos">Dispositivos</button>
-      </div>
+    <div class="admin-tabs">
+      <button class="admin-tab" id="tab-admin-alumnos"><span class="icono">👤</span>Alumnos</button>
+      <button class="admin-tab" id="tab-admin-registros"><span class="icono">📅</span>Registros de un día</button>
+      <button class="admin-tab" id="tab-admin-informes"><span class="icono">📊</span>Informes</button>
+      <button class="admin-tab" id="tab-admin-extraordinarios"><span class="icono">✳</span>Accesos Extraordinarios</button>
+      <button class="admin-tab" id="tab-admin-dispositivos"><span class="icono">📱</span>Dispositivos</button>
+      <button class="admin-tab" id="tab-admin-historial-pendientes"><span class="icono">⚠</span>Histórico de Pendientes</button>
+    </div>
+    <div class="modal-body admin-body">
 
       <div id="admin-panel-alumnos">
         <p style="color:var(--ink-soft); font-size:14px;">Gestión de la lista de alumnos.</p>
@@ -834,11 +969,22 @@
         <div id="dispositivos-tabla"></div>
       </div>
 
+      <div id="admin-panel-historial-pendientes" class="hidden">
+        <p style="color:var(--ink-soft); font-size:14px;">Grupos que quedaron pendientes por cerrar (con alumnos sin marcar) en días anteriores, y qué DNI/NIE validaron esos registros incompletos.</p>
+        <div class="field-row">
+          <div class="field"><label>Desde</label><input type="date" id="hist-pend-desde"></div>
+          <div class="field"><label>Hasta</label><input type="date" id="hist-pend-hasta"></div>
+          <div class="field" style="flex:0; align-self:flex-end;"><button class="btn btn-primary" id="btn-buscar-hist-pend">Buscar</button></div>
+        </div>
+        <div id="hist-pend-resultado" style="margin-top:14px;"></div>
+      </div>
+
       <div id="admin-panel-registros" class="hidden">
         <div class="field" style="max-width:220px;">
           <label>Fecha</label>
           <input type="date" id="admin-fecha-registros">
         </div>
+        <div id="admin-registros-dnis"></div>
         <div id="admin-tabla-registros" style="max-height:380px; overflow-y:auto; overflow-x:auto; border:1px solid var(--line); border-radius:10px; margin-top:12px;"></div>
 
         <div style="margin-top:28px; padding-top:18px; border-top:1px solid var(--line);">
@@ -888,11 +1034,67 @@
   </div>
 </div>
 
+<!-- MODAL: detalle de grupos pendientes hoy -->
+<div class="overlay hidden" id="modal-pendientes-hoy">
+  <div class="modal modal-wide">
+    <div class="modal-head"><h2>Grupos pendientes hoy · <span id="pendientes-hoy-fecha-titulo"></span></h2><button class="x" data-close>&times;</button></div>
+    <div class="modal-body">
+      <div id="pendientes-hoy-lista"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close>Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="modal-pendientes-hoy-detalle">
+  <div class="modal">
+    <div class="modal-head"><h2 id="pendientes-hoy-detalle-titulo"></h2><button class="x" data-close>&times;</button></div>
+    <div class="modal-body">
+      <div id="pendientes-hoy-detalle-lista"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="btn-pendientes-hoy-volver">&larr; Volver a los grupos</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: completar un grupo pendiente de un día anterior (desde Administrador) -->
+<div class="overlay hidden" id="modal-hist-pend-completar">
+  <div class="modal modal-wide">
+    <div class="modal-head"><h2 id="hist-pend-completar-titulo"></h2><button class="x" data-close>&times;</button></div>
+    <div class="modal-body">
+      <p style="margin-top:0; color:var(--ink-soft); font-size:13.5px;">Marca ✓ presente o ✗ ausente a cada alumno pendiente de ese día. Solo se guardarán los que marques.</p>
+      <div id="hist-pend-completar-lista"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close>Cancelar</button>
+      <button class="btn btn-primary" id="btn-hist-pend-guardar">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DNI para confirmar el cierre de un grupo pendiente antiguo -->
+<div class="overlay hidden" id="modal-hist-pend-dni">
+  <div class="modal">
+    <div class="modal-head"><h2>Confirmar</h2><button class="x" data-close>&times;</button></div>
+    <div class="modal-body">
+      <p style="margin-top:0; color:var(--ink-soft);">Para guardar estos registros, introduce tu DNI.</p>
+      <div class="field"><label>DNI</label><input type="text" id="in-dni-hist-pend" placeholder="12345678A"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close>Cancelar</button>
+      <button class="btn btn-primary" id="btn-aceptar-dni-hist-pend">Aceptar</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL: registros de hoy (público, solo consulta) -->
 <div class="overlay hidden" id="modal-registros-hoy">
   <div class="modal modal-wide">
     <div class="modal-head"><h2>Registros de hoy · <span id="registros-hoy-fecha-titulo"></span></h2><button class="x" data-close>&times;</button></div>
     <div class="modal-body">
+      <div id="registros-hoy-dnis" class="linea-dnis"></div>
       <div id="registros-hoy-lista"></div>
     </div>
     <div class="modal-foot">
@@ -956,6 +1158,7 @@
         </div>
       </div>
       <div style="text-align:center; margin-bottom:6px;"><button class="btn btn-primary" id="btn-aplicar-informe">Aplicar filtros</button></div>
+      <div id="rep-dnis"></div>
       <div class="report-summary" id="rep-resumen"></div>
       <div id="rep-tabla-wrap" style="max-height:320px; overflow-y:auto; overflow-x:auto; border:1px solid var(--line); border-radius:10px;"></div>
     </div>
@@ -1050,19 +1253,38 @@ function mostrarPantallaDispositivo(cual){
   document.getElementById("pantalla-revocado-dispositivo").classList.toggle("hidden", cual!=="revocado");
 }
 
+var estadoDispositivoPrevio = undefined; // undefined=aún no lo sabemos, true/false=último estado visto en esta sesión
+
+function generarCodigoRecuperacion(){
+  var chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // sin 0/O ni 1/I, para que no se confundan al copiarlo a mano
+  var codigo = "";
+  for(var i=0;i<10;i++) codigo += chars[Math.floor(Math.random()*chars.length)];
+  return codigo;
+}
+
 function iniciarControlDispositivo(uid){
   dispositivosCol.doc(uid).onSnapshot(function(doc){
     if(!doc.exists){
+      estadoDispositivoPrevio = false;
       mostrarPantallaDispositivo("solicitar");
       return;
     }
     var d = doc.data();
     if(d.autorizado){
+      // Si justo acaba de pasar de "no autorizado" a "autorizado" en esta sesión,
+      // mostramos su código de recuperación (si tiene) para que lo guarde.
+      if(estadoDispositivoPrevio === false && d.codigoRecuperacion){
+        document.getElementById("texto-codigo-recuperacion").textContent = d.codigoRecuperacion;
+        abrir("modal-codigo-recuperacion");
+      }
+      estadoDispositivoPrevio = true;
       mostrarPantallaDispositivo(null);
     } else if(d.fechaAutorizacion){
+      estadoDispositivoPrevio = false;
       document.getElementById("revocado-nombre-dispositivo").textContent = d.nombre||"";
       mostrarPantallaDispositivo("revocado");
     } else {
+      estadoDispositivoPrevio = false;
       document.getElementById("pendiente-nombre-dispositivo").textContent = d.nombre||"";
       mostrarPantallaDispositivo("pendiente");
     }
@@ -1074,6 +1296,54 @@ function iniciarControlDispositivo(uid){
     mostrarPantallaDispositivo("solicitar");
   });
 }
+
+/* ---------- Recuperación de acceso por código ---------- */
+["link-codigo-recuperacion-1","link-codigo-recuperacion-2"].forEach(function(id){
+  document.getElementById(id).addEventListener("click", function(e){
+    e.preventDefault();
+    document.getElementById("in-codigo-recuperacion").value = "";
+    abrir("modal-usar-codigo-recuperacion");
+  });
+});
+document.getElementById("btn-usar-codigo-recuperacion").addEventListener("click", function(){
+  var codigo = document.getElementById("in-codigo-recuperacion").value.trim().toUpperCase();
+  if(!codigo){ toast("Escribe el código de recuperación"); return; }
+  var uidActual = firebase.auth().currentUser.uid;
+  var codigoRef = db.collection("codigosRecuperacion").doc(codigo);
+  conCarga(function(){
+    return codigoRef.get().then(function(doc){
+      if(!doc.exists){
+        return {ok:false};
+      }
+      var datos = doc.data();
+      var uidAntiguo = datos.uid;
+      var nombre = datos.nombre || "Dispositivo recuperado";
+      var batch = db.batch();
+      batch.set(dispositivosCol.doc(uidActual), {
+        nombre: nombre, autorizado:true,
+        fechaSolicitud: new Date().toISOString(),
+        fechaAutorizacion: new Date().toISOString(),
+        codigoRecuperacion: codigo
+      });
+      batch.set(codigoRef, {uid: uidActual, nombre: nombre}, {merge:true});
+      return batch.commit().then(function(){
+        // Ahora que este dispositivo ya está autorizado, borramos la ficha antigua
+        // (si era distinta) para no dejar duplicados en la lista de Administrador.
+        if(uidAntiguo && uidAntiguo !== uidActual){
+          return dispositivosCol.doc(uidAntiguo).delete().catch(function(){ /* no crítico */ });
+        }
+      }).then(function(){ return {ok:true}; });
+    });
+  }).then(function(resultado){
+    if(!resultado) return; // ya se mostró un aviso de error genérico dentro de conCarga
+    if(resultado.ok){
+      cerrar("modal-usar-codigo-recuperacion");
+      toast("Acceso recuperado correctamente");
+    } else {
+      toast("Ese código no es válido");
+    }
+  });
+});
 
 document.getElementById("btn-solicitar-dispositivo").addEventListener("click", function(){
   var nombre = document.getElementById("in-nombre-dispositivo").value.trim() || "Dispositivo sin nombre";
@@ -1102,9 +1372,16 @@ document.getElementById("link-primer-dispositivo").addEventListener("click", fun
     batch.set(db.collection("configuracion").doc("bootstrap"), {usado:true}, {merge:true});
     return batch.commit();
   }).then(function(){
-    // Si esto falla silenciosamente es porque el arranque único ya se usó antes en
-    // otro dispositivo; en ese caso hay que pedirle a un dispositivo ya autorizado
-    // que lo autorice desde Administrador → Dispositivos.
+    // Generamos el código de recuperación en un segundo paso, ya con el dispositivo
+    // autorizado (las reglas de seguridad no permiten crearlo en el mismo lote que
+    // la autorización de arranque).
+    var codigo = generarCodigoRecuperacion();
+    conCarga(function(){
+      var batch2 = db.batch();
+      batch2.set(dispositivosCol.doc(uid), {codigoRecuperacion: codigo}, {merge:true});
+      batch2.set(db.collection("codigosRecuperacion").doc(codigo), {uid:uid, nombre:nombre});
+      return batch2.commit();
+    });
   });
 });
 
@@ -1140,6 +1417,41 @@ function horaActual(){
 function nombreMostrar(a){
   var apellidos = [a.primerApellido||"", a.segundoApellido||""].join(" ").trim();
   return apellidos ? (apellidos+", "+(a.nombre||"")) : (a.nombre||"");
+}
+
+function dnisUnicos(listaRegistros){
+  var vistos = {};
+  var lista = [];
+  listaRegistros.forEach(function(r){
+    var dni = (r.validadoDni||"").trim();
+    if(dni && !vistos[dni]){ vistos[dni] = true; lista.push(dni); }
+  });
+  return lista.sort();
+}
+function lineaDnisHtml(listaRegistros){
+  var dnis = dnisUnicos(listaRegistros);
+  return '<div class="linea-dnis">DNI/NIE que han participado: <strong>'+(dnis.length ? dnis.join(", ") : "—")+'</strong></div>';
+}
+
+function agruparFilasPorGrupoYFecha(filas){
+  var grupos = {};
+  filas.forEach(function(f){
+    var clave = f.fecha+"|"+f.nivel+"|"+f.grupo;
+    if(!grupos[clave]) grupos[clave] = {fecha:f.fecha, nivel:f.nivel, grupo:f.grupo, filas:[], dnisSet:{}, admin:false};
+    grupos[clave].filas.push(f);
+    if(f.validadoDni) grupos[clave].dnisSet[f.validadoDni] = true;
+    if(f.tocadoPorAdmin) grupos[clave].admin = true;
+  });
+  var lista = Object.keys(grupos).map(function(k){ return grupos[k]; });
+  lista.forEach(function(g){
+    var dnis = Object.keys(g.dnisSet).sort();
+    if(g.admin) dnis.push("Administrador");
+    g.participantes = dnis.length ? dnis.join(", ") : "—";
+  });
+  lista.sort(function(a,b){
+    return a.fecha===b.fecha ? (a.grupo||"").localeCompare(b.grupo||"","es") : a.fecha.localeCompare(b.fecha);
+  });
+  return lista;
 }
 
 /* ---------- Estado de sincronización ---------- */
@@ -1251,9 +1563,38 @@ function mostrarVista(nombre){
 }
 
 function refrescarVistaActual(){
+  pintarSidebarInicio();
+  pintarBannerPendientesHoy();
   if(vistaActual === "etapa") renderOpcionesEtapa();
   else if(vistaActual === "grupo") renderOpcionesGrupo();
   else if(vistaActual === "lista") pintarLista();
+}
+
+function pintarSidebarInicio(){
+  var cont = document.getElementById("inicio-sidebar");
+  if(!cont) return;
+  var claseEtapa = {Infantil:"infantil", Primaria:"primaria", Secundaria:"secundaria", AulaEnclave:"enclave"};
+  var activos = alumnos.filter(function(a){ return a.activo!==false; });
+  var html = '<h3>Alumnado del centro</h3>';
+  var totalMatriculados = 0, totalInscritos = 0;
+  NIVELES.forEach(function(niv){
+    var deEsteNivel = activos.filter(function(a){ return a.nivel===niv; });
+    var matriculados = deEsteNivel.length;
+    var inscritos = deEsteNivel.filter(function(a){ return a.estado==="SI"; }).length;
+    totalMatriculados += matriculados;
+    totalInscritos += inscritos;
+    html += '<div class="sidebar-etapa '+claseEtapa[niv]+'">'
+      + '<div class="nombre">'+NIVEL_LABEL[niv]+'</div>'
+      + '<div class="cifra"><span>Matriculados</span><b>'+matriculados+'</b></div>'
+      + '<div class="cifra"><span>Inscritos comedor</span><b>'+inscritos+'</b></div>'
+      + '</div>';
+  });
+  html += '<div class="sidebar-etapa total">'
+    + '<div class="nombre">Total centro</div>'
+    + '<div class="cifra"><span>Matriculados</span><b>'+totalMatriculados+'</b></div>'
+    + '<div class="cifra"><span>Inscritos comedor</span><b>'+totalInscritos+'</b></div>'
+    + '</div>';
+  cont.innerHTML = html;
 }
 
 document.getElementById("btn-ir-pasar-lista").addEventListener("click", function(){
@@ -1455,7 +1796,16 @@ document.getElementById("btn-confirmar-observacion").addEventListener("click", f
 });
 
 /* ---------- Modales genéricos ---------- */
-function abrir(id){ document.getElementById(id).classList.remove("hidden"); }
+// Cada ventana emergente que se abre recibe un nivel (z-index) más alto que la anterior,
+// para que SIEMPRE quede por delante de las que ya estaban abiertas, y nunca se quede
+// "escondida" detrás de otra teniendo que cerrar la de delante para verla.
+var nivelApilamientoModal = 60;
+function abrir(id){
+  var el = document.getElementById(id);
+  nivelApilamientoModal++;
+  el.style.zIndex = nivelApilamientoModal;
+  el.classList.remove("hidden");
+}
 function cerrar(id){ document.getElementById(id).classList.add("hidden"); }
 
 /* ---------- Indicador de carga (bloquea la app mientras se ejecuta una acción) ---------- */
@@ -1505,6 +1855,17 @@ function poblarBuscadorAlumnoAdmin(){
   }).join("");
 }
 
+function poblarListaGruposExistentes(nivel){
+  var datalist = document.getElementById("lista-grupos-existentes");
+  var grupos = {};
+  alumnos.forEach(function(a){ if(a.nivel===nivel && a.grupo) grupos[a.grupo] = true; });
+  var lista = Object.keys(grupos).sort(function(a,b){ return a.localeCompare(b,"es"); });
+  datalist.innerHTML = lista.map(function(g){ return '<option value="'+g+'"></option>'; }).join("");
+}
+document.getElementById("in-nivel").addEventListener("change", function(e){
+  poblarListaGruposExistentes(e.target.value);
+});
+
 document.getElementById("btn-admin-add-alumno").addEventListener("click", function(){
   editandoAlumnoId = null;
   document.getElementById("modal-alumno-titulo").textContent = "Nuevo alumno";
@@ -1514,6 +1875,7 @@ document.getElementById("btn-admin-add-alumno").addEventListener("click", functi
   document.getElementById("in-nivel").value = "Infantil";
   document.getElementById("in-grupo").value = "";
   document.getElementById("in-estado").value = "SI";
+  poblarListaGruposExistentes("Infantil");
   abrir("modal-alumno");
 });
 
@@ -1530,6 +1892,7 @@ document.getElementById("btn-admin-editar-alumno").addEventListener("click", fun
   document.getElementById("in-nivel").value = a.nivel||"Infantil";
   document.getElementById("in-grupo").value = a.grupo||"";
   document.getElementById("in-estado").value = a.estado||"SI";
+  poblarListaGruposExistentes(a.nivel||"Infantil");
   abrir("modal-alumno");
 });
 
@@ -1538,7 +1901,7 @@ document.getElementById("btn-guardar-alumno").addEventListener("click", function
   var apellido2 = document.getElementById("in-apellido2").value.trim();
   var nombre = document.getElementById("in-nombre").value.trim();
   var nivel = document.getElementById("in-nivel").value;
-  var grupo = document.getElementById("in-grupo").value.trim();
+  var grupo = document.getElementById("in-grupo").value.trim().replace(/\s+/g, " ");
   var estado = document.getElementById("in-estado").value;
   if(!nombre || !apellido1){ toast("Escribe al menos el nombre y el primer apellido"); return; }
   var datos = {primerApellido:apellido1, segundoApellido:apellido2, nombre:nombre, nivel:nivel, grupo:grupo, estado:estado};
@@ -1637,11 +2000,13 @@ function mostrarPanelAdmin(panel){
   document.getElementById("admin-panel-informes").classList.toggle("hidden", panel!=="informes");
   document.getElementById("admin-panel-extraordinarios").classList.toggle("hidden", panel!=="extraordinarios");
   document.getElementById("admin-panel-dispositivos").classList.toggle("hidden", panel!=="dispositivos");
-  document.getElementById("tab-admin-alumnos").className = "btn"+(panel==="alumnos"?" btn-primary":"");
-  document.getElementById("tab-admin-registros").className = "btn"+(panel==="registros"?" btn-primary":"");
-  document.getElementById("tab-admin-informes").className = "btn"+(panel==="informes"?" btn-primary":"");
-  document.getElementById("tab-admin-extraordinarios").className = "btn"+(panel==="extraordinarios"?" btn-primary":"");
-  document.getElementById("tab-admin-dispositivos").className = "btn"+(panel==="dispositivos"?" btn-primary":"");
+  document.getElementById("admin-panel-historial-pendientes").classList.toggle("hidden", panel!=="historial-pendientes");
+  document.getElementById("tab-admin-alumnos").className = "admin-tab"+(panel==="alumnos"?" activo":"");
+  document.getElementById("tab-admin-registros").className = "admin-tab"+(panel==="registros"?" activo":"");
+  document.getElementById("tab-admin-informes").className = "admin-tab"+(panel==="informes"?" activo":"");
+  document.getElementById("tab-admin-extraordinarios").className = "admin-tab"+(panel==="extraordinarios"?" activo":"");
+  document.getElementById("tab-admin-dispositivos").className = "admin-tab"+(panel==="dispositivos"?" activo":"");
+  document.getElementById("tab-admin-historial-pendientes").className = "admin-tab"+(panel==="historial-pendientes"?" activo":"");
   if(panel === "registros"){
     if(!document.getElementById("admin-fecha-registros").value){
       document.getElementById("admin-fecha-registros").value = hoyISO();
@@ -1658,12 +2023,153 @@ function mostrarPanelAdmin(panel){
   if(panel === "dispositivos"){
     pintarDispositivos();
   }
+  if(panel === "historial-pendientes"){
+    if(!document.getElementById("hist-pend-desde").value){
+      var haceUnMes = new Date(); haceUnMes.setDate(haceUnMes.getDate()-30);
+      document.getElementById("hist-pend-desde").value = haceUnMes.toISOString().slice(0,10);
+      document.getElementById("hist-pend-hasta").value = hoyISO();
+    }
+    buscarHistorialPendientes();
+  }
 }
 document.getElementById("tab-admin-alumnos").addEventListener("click", function(){ mostrarPanelAdmin("alumnos"); });
 document.getElementById("tab-admin-registros").addEventListener("click", function(){ mostrarPanelAdmin("registros"); });
 document.getElementById("tab-admin-informes").addEventListener("click", function(){ mostrarPanelAdmin("informes"); });
 document.getElementById("tab-admin-extraordinarios").addEventListener("click", function(){ mostrarPanelAdmin("extraordinarios"); });
 document.getElementById("tab-admin-dispositivos").addEventListener("click", function(){ mostrarPanelAdmin("dispositivos"); });
+document.getElementById("tab-admin-historial-pendientes").addEventListener("click", function(){ mostrarPanelAdmin("historial-pendientes"); });
+document.getElementById("btn-buscar-hist-pend").addEventListener("click", buscarHistorialPendientes);
+
+function buscarHistorialPendientes(){
+  var desde = document.getElementById("hist-pend-desde").value;
+  var hasta = document.getElementById("hist-pend-hasta").value;
+  var cont = document.getElementById("hist-pend-resultado");
+  if(!desde || !hasta){ toast("Indica las dos fechas del rango"); return; }
+  mostrarCargando();
+  obtenerRegistrosRango(desde, hasta).then(function(regs){
+    ocultarCargando();
+
+    var alumnosPorId = {};
+    alumnos.forEach(function(a){ alumnosPorId[a.id] = a; });
+
+    // Agrupar los registros existentes por fecha+etapa+grupo
+    var grupos = {}; // clave "fecha|nivel|grupo"
+    regs.forEach(function(r){
+      var a = alumnosPorId[r.alumnoId];
+      var nivel = a ? a.nivel : "?";
+      var grupo = a ? (a.grupo||"") : "";
+      var clave = r.fecha+"|"+nivel+"|"+grupo;
+      if(!grupos[clave]) grupos[clave] = {fecha:r.fecha, nivel:nivel, grupo:grupo, idsConRegistro:{}, dnis:{}};
+      grupos[clave].idsConRegistro[r.alumnoId] = true;
+      if(r.validadoDni) grupos[clave].dnis[r.validadoDni] = true;
+    });
+
+    // Para cada grupo tocado esa fecha, comparar contra los inscritos actuales de ese
+    // nivel+grupo: si faltan por marcar, se considera que quedó pendiente ese día.
+    var pendientes = [];
+    Object.keys(grupos).forEach(function(clave){
+      var g = grupos[clave];
+      if(!g.grupo) return;
+      var inscritosDeEseGrupo = alumnos.filter(function(a){ return a.nivel===g.nivel && a.grupo===g.grupo && a.estado==="SI" && a.activo!==false; });
+      var faltan = inscritosDeEseGrupo.filter(function(a){ return !g.idsConRegistro[a.id]; });
+      if(faltan.length > 0){
+        pendientes.push({fecha:g.fecha, nivel:g.nivel, grupo:g.grupo, faltan:faltan, dnis:Object.keys(g.dnis).sort()});
+      }
+    });
+    pendientes.sort(function(a,b){ return b.fecha.localeCompare(a.fecha); }); // más recientes primero
+
+    if(pendientes.length === 0){
+      cont.innerHTML = '<p style="color:var(--ok); font-size:14px;">✓ No hay ningún grupo pendiente por cerrar en ese rango de fechas.</p>';
+      return;
+    }
+    cont.innerHTML = '<p style="color:var(--accent-dark); font-weight:600; font-size:14px; margin-bottom:12px;">⚠ '+pendientes.length+' grupo'+(pendientes.length===1?"":"s")+' quedó'+(pendientes.length===1?"":"aron")+' pendiente'+(pendientes.length===1?"":"s")+' de cerrar en este rango. Toca una tarjeta para completarlo:</p>'
+      + pendientes.map(function(p, i){
+          return '<div class="hist-pend-item" data-hist-idx="'+i+'">'
+            + '<div class="cabecera"><span class="fecha-badge">'+p.fecha+'</span><h4>'+(NIVEL_LABEL[p.nivel]||p.nivel)+' · '+p.grupo+' — faltan '+p.faltan.length+'</h4></div>'
+            + '<ul>'+p.faltan.map(function(a){ return '<li>'+nombreMostrar(a)+'</li>'; }).join("")+'</ul>'
+            + '<div class="dnis">DNI/NIE que participaron ese día en este grupo: <strong>'+(p.dnis.length ? p.dnis.join(", ") : "—")+'</strong></div>'
+            + '<div class="toca-completar">Toca para marcar asistencia/ausencia de estos alumnos →</div>'
+            + '</div>';
+        }).join("");
+    ultimoHistorialPendientes = pendientes;
+    cont.querySelectorAll("[data-hist-idx]").forEach(function(card){
+      card.addEventListener("click", function(){
+        abrirCompletarHistPendiente(ultimoHistorialPendientes[parseInt(card.getAttribute("data-hist-idx"),10)]);
+      });
+    });
+  }, function(err){
+    ocultarCargando();
+    console.error(err);
+    toast("No se pudo consultar ese rango de fechas");
+  });
+}
+var ultimoHistorialPendientes = [];
+var histPendActual = null; // {fecha, nivel, grupo, faltan}
+var histPendMarcados = {}; // alumnoId -> "presente"|"ausente"
+
+function abrirCompletarHistPendiente(p){
+  histPendActual = p;
+  histPendMarcados = {};
+  pintarCompletarHistPendiente();
+  abrir("modal-hist-pend-completar");
+}
+function pintarCompletarHistPendiente(){
+  var p = histPendActual;
+  document.getElementById("hist-pend-completar-titulo").textContent =
+    (NIVEL_LABEL[p.nivel]||p.nivel)+" · "+p.grupo+" — "+p.fecha;
+  var cont = document.getElementById("hist-pend-completar-lista");
+  cont.innerHTML = p.faltan.map(function(a){
+    var marca = histPendMarcados[a.id];
+    return '<div class="row '+(marca==="presente"?"pendiente":(marca==="ausente"?"ausente":"requiere-accion"))+'" style="cursor:default;">'
+      + '<span class="name">'+nombreMostrar(a)+(a.grupo?'<span class="sub">'+a.grupo+'</span>':'')+'</span>'
+      + '<span class="status">'+(marca==="presente"?"✓ Presente":(marca==="ausente"?"✗ Ausente":"Pendiente de marcar"))+'</span>'
+      + '<span class="acciones">'
+      +   '<button class="btn-accion btn-check '+(marca==="presente"?"activo":"")+'" data-hist-alumno="'+a.id+'" data-hist-accion="presente" title="Marcar presente">✓</button>'
+      +   '<button class="btn-accion btn-x '+(marca==="ausente"?"activo":"")+'" data-hist-alumno="'+a.id+'" data-hist-accion="ausente" title="Marcar ausente">✗</button>'
+      + '</span>'
+      + '</div>';
+  }).join("");
+  cont.querySelectorAll("[data-hist-alumno]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var id = btn.getAttribute("data-hist-alumno"), accion = btn.getAttribute("data-hist-accion");
+      histPendMarcados[id] = (histPendMarcados[id]===accion) ? undefined : accion;
+      if(histPendMarcados[id]===undefined) delete histPendMarcados[id];
+      pintarCompletarHistPendiente();
+    });
+  });
+}
+document.getElementById("btn-hist-pend-guardar").addEventListener("click", function(){
+  if(Object.keys(histPendMarcados).length === 0){ toast("Marca al menos un alumno antes de guardar"); return; }
+  document.getElementById("in-dni-hist-pend").value = "";
+  abrir("modal-hist-pend-dni");
+});
+document.getElementById("btn-aceptar-dni-hist-pend").addEventListener("click", function(){
+  var dni = document.getElementById("in-dni-hist-pend").value.trim();
+  if(!dni){ toast("Introduce el DNI para confirmar"); return; }
+  var fecha = histPendActual.fecha;
+  var entradas = Object.keys(histPendMarcados).map(function(id){ return {alumnoId:id, estadoAsistencia:histPendMarcados[id]}; });
+  cerrar("modal-hist-pend-dni");
+  conCarga(function(){
+    var batch = db.batch();
+    entradas.forEach(function(e){
+      batch.set(registrosCol.doc(), {
+        alumnoId: e.alumnoId,
+        fecha: fecha,
+        hora: horaActual(),
+        estadoInscripcion: "SI",
+        estadoAsistencia: e.estadoAsistencia,
+        observacion: null,
+        validadoDni: dni
+      });
+    });
+    return batch.commit();
+  }).then(function(){
+    cerrar("modal-hist-pend-completar");
+    toast("Registro completado correctamente");
+    buscarHistorialPendientes();
+  });
+});
+
 document.getElementById("admin-fecha-registros").addEventListener("change", function(e){
   cargarRegistrosAdmin(e.target.value);
 });
@@ -1697,8 +2203,13 @@ function pintarDispositivos(){
     cont.querySelectorAll("[data-autorizar-disp]").forEach(function(btn){
       btn.addEventListener("click", function(){
         var id = btn.getAttribute("data-autorizar-disp");
+        var d = docs.find(function(x){ return x.id===id; });
+        var codigo = generarCodigoRecuperacion();
         conCarga(function(){
-          return dispositivosCol.doc(id).set({autorizado:true, fechaAutorizacion:new Date().toISOString()}, {merge:true});
+          var batch = db.batch();
+          batch.set(dispositivosCol.doc(id), {autorizado:true, fechaAutorizacion:new Date().toISOString(), codigoRecuperacion:codigo}, {merge:true});
+          batch.set(db.collection("codigosRecuperacion").doc(codigo), {uid:id, nombre:(d?d.nombre:"")});
+          return batch.commit();
         }).then(function(){ pintarDispositivos(); });
       });
     });
@@ -1867,6 +2378,7 @@ function cargarRegistrosAdmin(fecha){
   obtenerRegistrosRango(fecha, fecha).then(function(regs){
     ocultarCargando();
     regs = regs.filter(function(r){ return r.fecha === fecha; });
+    document.getElementById("admin-registros-dnis").innerHTML = lineaDnisHtml(regs);
     if(regs.length === 0){
       cont.innerHTML = "<p style='padding:12px; color:var(--ink-soft);'>Sin registros ese día.</p>";
       return;
@@ -1900,7 +2412,10 @@ function cargarRegistrosAdmin(fecha){
         var id = btn.getAttribute("data-toggle-registro");
         var nuevoEstado = btn.getAttribute("data-estado");
         conCarga(function(){
-          return registrosCol.doc(id).update({estadoAsistencia: nuevoEstado});
+          // Se marca tocadoPorAdmin porque esta edición no pasa por el DNI de quien
+          // pasó lista originalmente: así en los informes aparecerá "Administrador"
+          // junto a los DNI/NIE reales de ese grupo.
+          return registrosCol.doc(id).update({estadoAsistencia: nuevoEstado, tocadoPorAdmin: true});
         }).then(function(){ cargarRegistrosAdmin(fecha); pintarResumenDiaAdmin(); });
       });
     });
@@ -2043,6 +2558,122 @@ document.getElementById("banner-extra-hoy").addEventListener("click", function()
   abrir("modal-extra-hoy-detalle");
 });
 
+/* ---------- Grupos pendientes hoy (tarjeta roja en Inicio) ---------- */
+function calcularGruposPendientesHoy(){
+  var hoy = hoyISO();
+  var registradosHoyIds = {};
+  registros.filter(function(r){ return r.fecha===hoy; }).forEach(function(r){ registradosHoyIds[r.alumnoId] = true; });
+
+  var grupos = {}; // clave "nivel|grupo"
+  alumnos.filter(function(a){ return a.activo!==false; }).forEach(function(a){
+    if(!a.grupo) return;
+    var clave = a.nivel+"|"+a.grupo;
+    if(!grupos[clave]) grupos[clave] = {nivel:a.nivel, grupo:a.grupo, tocado:false, inscritos:[]};
+    if(a.estado === "SI") grupos[clave].inscritos.push(a);
+    if(registradosHoyIds[a.id]) grupos[clave].tocado = true;
+  });
+
+  var pendientes = [];
+  Object.keys(grupos).forEach(function(clave){
+    var g = grupos[clave];
+    if(!g.tocado) return; // grupo al que hoy no se le ha pasado lista todavía: no cuenta como "pendiente"
+    var faltan = g.inscritos.filter(function(a){ return !registradosHoyIds[a.id]; });
+    if(faltan.length > 0) pendientes.push({nivel:g.nivel, grupo:g.grupo, faltan:faltan});
+  });
+  return pendientes;
+}
+
+var modalPendientesAbierto = null; // null | "lista" | {nivel, grupo} del detalle abierto
+
+function pintarBannerPendientesHoy(){
+  var banner = document.getElementById("banner-pendientes-hoy");
+  var pendientes = calcularGruposPendientesHoy();
+  if(pendientes.length === 0){
+    banner.classList.add("hidden");
+  } else {
+    document.getElementById("banner-pendientes-hoy-fecha").textContent = fechaBonita();
+    banner.classList.remove("hidden");
+  }
+
+  // Auto-actualización: si hay una de estas ventanas abierta ahora mismo (en este
+  // dispositivo o en cualquier otro que esté sincronizado), se refresca su contenido
+  // solo, sin que el usuario tenga que cerrar y volver a abrir nada.
+  if(modalPendientesAbierto === "lista" && !document.getElementById("modal-pendientes-hoy").classList.contains("hidden")){
+    pintarListaPendientesHoy(pendientes);
+  } else if(modalPendientesAbierto && modalPendientesAbierto !== "lista" && !document.getElementById("modal-pendientes-hoy-detalle").classList.contains("hidden")){
+    var sigue = pendientes.find(function(p){ return p.nivel===modalPendientesAbierto.nivel && p.grupo===modalPendientesAbierto.grupo; });
+    if(sigue){
+      pintarDetallePendienteGrupo(sigue);
+    } else {
+      // Ese grupo concreto ya se completó: volvemos automáticamente a la lista
+      cerrar("modal-pendientes-hoy-detalle");
+      modalPendientesAbierto = "lista";
+      abrir("modal-pendientes-hoy");
+      pintarListaPendientesHoy(pendientes);
+    }
+  }
+}
+
+function pintarListaPendientesHoy(pendientes){
+  pendientes = pendientes || calcularGruposPendientesHoy();
+  var cont = document.getElementById("pendientes-hoy-lista");
+  if(pendientes.length === 0){
+    cont.innerHTML = '<div class="empty-state"><h3>Ya no quedan grupos pendientes</h3><p>Todos los grupos a los que se ha pasado lista hoy están completos.</p></div>';
+    return;
+  }
+  var claseEtapaCol = {Infantil:"infantil", Primaria:"primaria", Secundaria:"secundaria", AulaEnclave:"enclave"};
+  var html = '<div class="columnas-etapas-hoy">';
+  NIVELES.forEach(function(niv){
+    var deEsteNivel = pendientes.filter(function(p){ return p.nivel === niv; });
+    html += '<div class="columna-etapa-hoy '+claseEtapaCol[niv]+'"><h3>'+NIVEL_LABEL[niv]+'</h3>';
+    if(deEsteNivel.length === 0){
+      html += '<p class="sin-grupos">Sin pendientes</p>';
+    } else {
+      deEsteNivel.forEach(function(p){
+        html += '<div class="tarjeta-grupo-hoy tarjeta-grupo-pendiente" data-nivel="'+p.nivel+'" data-grupo="'+p.grupo+'">'
+          + '<h4>'+(p.grupo||"—")+'</h4>'
+          + '<div class="cifras"><span style="color:var(--accent-dark);"><b>'+p.faltan.length+'</b> por marcar</span></div>'
+          + '</div>';
+      });
+    }
+    html += '</div>';
+  });
+  html += '</div>';
+  cont.innerHTML = html;
+  cont.querySelectorAll(".tarjeta-grupo-pendiente").forEach(function(card){
+    card.addEventListener("click", function(){
+      var nivel = card.getAttribute("data-nivel"), grupo = card.getAttribute("data-grupo");
+      var p = calcularGruposPendientesHoy().find(function(x){ return x.nivel===nivel && x.grupo===grupo; });
+      if(!p) return;
+      modalPendientesAbierto = {nivel:nivel, grupo:grupo};
+      pintarDetallePendienteGrupo(p);
+      cerrar("modal-pendientes-hoy");
+      abrir("modal-pendientes-hoy-detalle");
+    });
+  });
+}
+
+function pintarDetallePendienteGrupo(p){
+  document.getElementById("pendientes-hoy-detalle-titulo").textContent = (NIVEL_LABEL[p.nivel]||p.nivel)+" · "+p.grupo+" — faltan "+p.faltan.length;
+  document.getElementById("pendientes-hoy-detalle-lista").innerHTML =
+    '<ul style="color:var(--accent-dark); font-weight:600; font-size:15px; padding-left:22px;">'
+    + p.faltan.map(function(a){ return '<li>'+nombreMostrar(a)+'</li>'; }).join("")
+    + '</ul>';
+}
+
+document.getElementById("banner-pendientes-hoy").addEventListener("click", function(){
+  modalPendientesAbierto = "lista";
+  document.getElementById("pendientes-hoy-fecha-titulo").textContent = fechaBonita();
+  pintarListaPendientesHoy();
+  abrir("modal-pendientes-hoy");
+});
+document.getElementById("btn-pendientes-hoy-volver").addEventListener("click", function(){
+  cerrar("modal-pendientes-hoy-detalle");
+  modalPendientesAbierto = "lista";
+  abrir("modal-pendientes-hoy");
+  pintarListaPendientesHoy();
+});
+
 /* ---------- Registros de hoy (público, solo consulta) ---------- */
 function fechaBonita(){
   return new Date().toLocaleDateString("es-ES", {day:"numeric", month:"long"});
@@ -2080,6 +2711,7 @@ document.getElementById("btn-registros-hoy").addEventListener("click", function(
   var alumnosPorId = {};
   alumnos.forEach(function(a){ alumnosPorId[a.id] = a; });
   var hoyRegistros = registros.filter(function(r){ return r.fecha === hoy; });
+  document.getElementById("registros-hoy-dnis").innerHTML = lineaDnisHtml(hoyRegistros);
 
   var grupos = {}; // clave "nivel|grupo" -> {nivel, grupo, entradas:[]}
   hoyRegistros.forEach(function(r){
@@ -2171,21 +2803,24 @@ document.getElementById("btn-pasar-lista").addEventListener("click", function(){
   var ids = Object.keys(sessionMarcados);
   if(ids.length === 0){ toast("No has marcado ningún alumno todavía"); return; }
 
-  // Validación: todos los inscritos visibles (según etapa/grupo seleccionados) deben tener
-  // ya una decisión (presente o ausente) antes de poder cerrar el registro.
+  // Los inscritos visibles (según etapa/grupo seleccionados) que todavía no tienen
+  // decisión (presente o ausente). Ya NO se bloquea el envío por esto: se avisa
+  // claramente y el grupo queda marcado como "pendiente" hasta que se completen.
   var inscritosVisibles = alumnosVisiblesParaValidar().filter(function(a){ return a.estado === "SI"; });
   var faltan = inscritosVisibles.filter(function(a){ return !alumnoTieneDecision(a); });
+
+  var contPendientes = document.getElementById("resumen-sesion-pendientes");
   if(faltan.length > 0){
-    document.getElementById("faltan-texto").innerHTML =
-      "Faltan <strong>"+faltan.length+"</strong> alumno"+(faltan.length===1?"":"s")+" inscrito"+(faltan.length===1?"":"s")+" por marcar como presente o ausente antes de poder validar el registro"+(grupoActivo?" del grupo "+grupoActivo:(nivelActivo!=="Todos"?" de "+NIVEL_LABEL[nivelActivo]:""))+":";
-    var htmlFaltan = '<table class="report"><thead><tr><th>Alumno</th><th>Grupo</th></tr></thead><tbody>';
-    faltan.forEach(function(a){
-      htmlFaltan += '<tr><td>'+nombreMostrar(a)+'</td><td>'+(a.grupo||"")+'</td></tr>';
-    });
-    htmlFaltan += '</tbody></table>';
-    document.getElementById("faltan-lista").innerHTML = htmlFaltan;
-    abrir("modal-faltan");
-    return;
+    var htmlPend = '<div class="aviso-pendiente">'
+      + '<h3>⚠ Este grupo quedará PENDIENTE / en espera de confirmar a estos alumnos:</h3>'
+      + '<ul>' + faltan.map(function(a){ return '<li>'+nombreMostrar(a)+(a.grupo?' <span>('+a.grupo+')</span>':'')+'</li>'; }).join("") + '</ul>'
+      + '<p>Puedes validar igualmente ahora mismo con los datos ya marcados; el grupo aparecerá como pendiente en la pantalla de Inicio hasta que alguien complete a estos alumnos.</p>'
+      + '</div>';
+    contPendientes.innerHTML = htmlPend;
+    contPendientes.classList.remove("hidden");
+  } else {
+    contPendientes.innerHTML = "";
+    contPendientes.classList.add("hidden");
   }
 
   var asisten = [], noAsisten = [], noInscritosAsisten = [];
@@ -2223,6 +2858,10 @@ document.getElementById("btn-validar-sesion").addEventListener("click", function
   cerrar("modal-resumen-sesion");
   document.getElementById("in-dni").value = "";
   abrir("modal-dni");
+});
+document.getElementById("btn-volver-dni").addEventListener("click", function(){
+  cerrar("modal-dni");
+  abrir("modal-resumen-sesion");
 });
 
 document.getElementById("btn-aceptar-dni").addEventListener("click", function(){
@@ -2466,7 +3105,7 @@ function datosInformeRango(desde, hasta, nivel, grupo, alumnoId, condicion){
       return true;
     }).map(function(r){
       var a = alumnosPorId[r.alumnoId];
-      return {alumnoId:r.alumnoId, fecha:r.fecha, hora:r.hora, nombre:nombreMostrar(a), nivel:a.nivel, grupo:a.grupo||"", estadoInscripcion:r.estadoInscripcion||a.estado||"", asistencia:r.estadoAsistencia==="ausente"?"Ausente":"Presente", observacion:r.observacion||"", validadoDni:r.validadoDni||""};
+      return {alumnoId:r.alumnoId, fecha:r.fecha, hora:r.hora, nombre:nombreMostrar(a), nivel:a.nivel, grupo:a.grupo||"", estadoInscripcion:r.estadoInscripcion||a.estado||"", asistencia:r.estadoAsistencia==="ausente"?"Ausente":"Presente", observacion:r.observacion||"", validadoDni:r.validadoDni||"", tocadoPorAdmin:!!r.tocadoPorAdmin};
     }).sort(function(a,b){
       return a.fecha===b.fecha ? a.nombre.localeCompare(b.nombre,"es") : a.fecha.localeCompare(b.fecha);
     });
@@ -2490,6 +3129,7 @@ function pintarInforme(){
   datosInforme().then(function(filas){
     ocultarCargando(); // primero se oculta el reloj de arena…
 
+    document.getElementById("rep-dnis").innerHTML = "";
     var porNivel = {Infantil:0, Primaria:0, Secundaria:0, AulaEnclave:0};
     var asisten=0, noAsisten=0, noInscritos=0;
     filas.forEach(function(f){
@@ -2508,15 +3148,20 @@ function pintarInforme(){
     });
     document.getElementById("rep-resumen").innerHTML = resumen; // …y solo después se actualiza la pantalla
 
-    var tabla = '<table class="report"><thead><tr><th>Fecha</th><th>Hora</th><th>Alumno</th><th>Nivel</th><th>Grupo</th><th>Inscrito</th><th>Asistencia</th><th>Observación</th></tr></thead><tbody>';
     if(filas.length===0){
-      tabla += '<tr><td colspan="8" style="text-align:center; color:var(--ink-soft); padding:20px;">Sin registros con esos filtros</td></tr>';
+      wrap.innerHTML = '<p style="text-align:center; color:var(--ink-soft); padding:20px;">Sin registros con esos filtros</p>';
+    } else {
+      var gruposList = agruparFilasPorGrupoYFecha(filas);
+      wrap.innerHTML = gruposList.map(function(g){
+        var tabla = '<div class="linea-dnis" style="margin:10px 0 4px 0;">'+g.fecha+' · '+(NIVEL_LABEL[g.nivel]||g.nivel)+' · '+(g.grupo||"—")+' — DNI/NIE participantes: <strong>'+g.participantes+'</strong></div>';
+        tabla += '<table class="report"><thead><tr><th>Hora</th><th>Alumno</th><th>Inscrito</th><th>Asistencia</th><th>Observación</th></tr></thead><tbody>';
+        g.filas.forEach(function(f){
+          tabla += '<tr><td>'+f.hora+'</td><td>'+f.nombre+'</td><td>'+f.estadoInscripcion+'</td><td>'+f.asistencia+'</td><td>'+f.observacion+'</td></tr>';
+        });
+        tabla += '</tbody></table>';
+        return tabla;
+      }).join("");
     }
-    filas.forEach(function(f){
-      tabla += '<tr><td>'+f.fecha+'</td><td>'+f.hora+'</td><td>'+f.nombre+'</td><td>'+NIVEL_LABEL[f.nivel]+'</td><td>'+f.grupo+'</td><td>'+f.estadoInscripcion+'</td><td>'+f.asistencia+'</td><td>'+f.observacion+'</td></tr>';
-    });
-    tabla += '</tbody></table>';
-    wrap.innerHTML = tabla;
   }, function(err){
     ocultarCargando(); // también primero aquí, antes del aviso de error
     console.error(err);
@@ -2530,11 +3175,20 @@ function generarYDescargarExcel(filas, desde, hasta){
 
   var wb = XLSX.utils.book_new();
 
-  var detalle = filas.map(function(f){
-    return {Fecha:f.fecha, Hora:f.hora, Alumno:f.nombre, Nivel:NIVEL_LABEL[f.nivel], Grupo:f.grupo, "Inscrito en comedor":f.estadoInscripcion, Asistencia:f.asistencia, Observación:f.observacion, "Validado por (DNI)":f.validadoDni};
+  // Hoja "Detalle" seccionada por fecha+grupo, con el/los DNI (o "Administrador") que
+  // participaron en ese grupo justo encima de sus filas.
+  var gruposList = agruparFilasPorGrupoYFecha(filas);
+  var filasHoja = [["Informe de accesos al comedor — "+desde+" a "+hasta], []];
+  gruposList.forEach(function(g){
+    filasHoja.push(["Fecha: "+g.fecha+"   ·   "+(NIVEL_LABEL[g.nivel]||g.nivel)+" · "+(g.grupo||"—")+"   ·   DNI/NIE participantes: "+g.participantes]);
+    filasHoja.push(["Hora","Alumno","Inscrito en comedor","Asistencia","Observación"]);
+    g.filas.forEach(function(f){
+      filasHoja.push([f.hora, f.nombre, f.estadoInscripcion, f.asistencia, f.observacion]);
+    });
+    filasHoja.push([]);
   });
-  var wsDetalle = XLSX.utils.json_to_sheet(detalle);
-  wsDetalle["!cols"] = [{wch:12},{wch:8},{wch:32},{wch:20},{wch:10},{wch:14},{wch:12},{wch:34},{wch:14}];
+  var wsDetalle = XLSX.utils.aoa_to_sheet(filasHoja);
+  wsDetalle["!cols"] = [{wch:10},{wch:32},{wch:16},{wch:12},{wch:34}];
   XLSX.utils.book_append_sheet(wb, wsDetalle, "Detalle");
 
   var porFechaNivel = {};
@@ -2573,12 +3227,18 @@ document.getElementById("btn-export-pdf").addEventListener("click", function(){
   var html = '<h2 style="font-family:Georgia,serif;">Comedor Echeyde — Informe de accesos</h2>';
   html += '<p style="color:#5B6B62; margin-top:-8px;">Del '+desde+' al '+hasta+(nivel ? " · "+NIVEL_LABEL[nivel] : " · Todos los niveles")+'</p>';
   html += '<p style="font-size:14px;"><strong>Total de accesos: '+filas.length+'</strong></p>';
-  html += '<table style="width:100%; border-collapse:collapse; font-size:11px;">';
-  html += '<thead><tr>'+["Fecha","Hora","Alumno","Nivel","Grupo","Inscrito","Asistencia","Observación"].map(function(h){return '<th style="text-align:left; padding:6px; border-bottom:2px solid #22302A;">'+h+'</th>';}).join("")+'</tr></thead><tbody>';
-  filas.forEach(function(f){
-    html += '<tr><td style="padding:6px; border-bottom:1px solid #ddd;">'+f.fecha+'</td><td style="padding:6px; border-bottom:1px solid #ddd;">'+f.hora+'</td><td style="padding:6px; border-bottom:1px solid #ddd;">'+f.nombre+'</td><td style="padding:6px; border-bottom:1px solid #ddd;">'+NIVEL_LABEL[f.nivel]+'</td><td style="padding:6px; border-bottom:1px solid #ddd;">'+f.grupo+'</td><td style="padding:6px; border-bottom:1px solid #ddd;">'+f.estadoInscripcion+'</td><td style="padding:6px; border-bottom:1px solid #ddd;">'+f.asistencia+'</td><td style="padding:6px; border-bottom:1px solid #ddd;">'+f.observacion+'</td></tr>';
+
+  var gruposList = agruparFilasPorGrupoYFecha(filas);
+  gruposList.forEach(function(g){
+    html += '<div style="margin-top:16px; page-break-inside:avoid;">';
+    html += '<p style="font-size:12.5px; font-weight:bold; background:#EEE; padding:5px 8px; margin-bottom:2px;">'+g.fecha+' · '+(NIVEL_LABEL[g.nivel]||g.nivel)+' · '+(g.grupo||"—")+' — DNI/NIE participantes: '+g.participantes+'</p>';
+    html += '<table style="width:100%; border-collapse:collapse; font-size:11px;">';
+    html += '<thead><tr>'+["Hora","Alumno","Inscrito","Asistencia","Observación"].map(function(h){return '<th style="text-align:left; padding:6px; border-bottom:2px solid #22302A;">'+h+'</th>';}).join("")+'</tr></thead><tbody>';
+    g.filas.forEach(function(f){
+      html += '<tr><td style="padding:6px; border-bottom:1px solid #ddd;">'+f.hora+'</td><td style="padding:6px; border-bottom:1px solid #ddd;">'+f.nombre+'</td><td style="padding:6px; border-bottom:1px solid #ddd;">'+f.estadoInscripcion+'</td><td style="padding:6px; border-bottom:1px solid #ddd;">'+f.asistencia+'</td><td style="padding:6px; border-bottom:1px solid #ddd;">'+f.observacion+'</td></tr>';
+    });
+    html += '</tbody></table></div>';
   });
-  html += '</tbody></table>';
 
   document.getElementById("print-area").innerHTML = html;
   window.print();
