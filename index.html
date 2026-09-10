@@ -966,6 +966,7 @@
 
       <div id="admin-panel-dispositivos" class="hidden">
         <p style="color:var(--ink-soft); font-size:14px;">Dispositivos que han pedido acceso a esta app. Autorízalos para que puedan sincronizar, o revócalos si un aparato se pierde o ya no debe tener acceso.</p>
+        <button class="btn" id="btn-ver-mi-codigo" style="margin-bottom:14px;">🔑 Ver / generar el código de recuperación de este dispositivo</button>
         <div id="dispositivos-tabla"></div>
       </div>
 
@@ -2175,6 +2176,29 @@ document.getElementById("admin-fecha-registros").addEventListener("change", func
 });
 
 /* ---------- Dispositivos autorizados ---------- */
+document.getElementById("btn-ver-mi-codigo").addEventListener("click", function(){
+  var uid = firebase.auth().currentUser.uid;
+  conCarga(function(){
+    return dispositivosCol.doc(uid).get().then(function(doc){
+      var d = doc.data() || {};
+      if(d.codigoRecuperacion){
+        return {codigo: d.codigoRecuperacion};
+      }
+      // Este dispositivo todavía no tiene código (p. ej. se autorizó antes de que
+      // existiera esta función): se genera ahora mismo.
+      var codigo = generarCodigoRecuperacion();
+      var batch = db.batch();
+      batch.set(dispositivosCol.doc(uid), {codigoRecuperacion: codigo}, {merge:true});
+      batch.set(db.collection("codigosRecuperacion").doc(codigo), {uid:uid, nombre:(d.nombre||"")});
+      return batch.commit().then(function(){ return {codigo:codigo}; });
+    });
+  }).then(function(resultado){
+    if(!resultado) return;
+    document.getElementById("texto-codigo-recuperacion").textContent = resultado.codigo;
+    abrir("modal-codigo-recuperacion");
+  });
+});
+
 function pintarDispositivos(){
   var cont = document.getElementById("dispositivos-tabla");
   cont.innerHTML = '<p style="color:var(--ink-soft); font-size:14px;">Cargando…</p>';
