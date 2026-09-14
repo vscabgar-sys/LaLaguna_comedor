@@ -128,7 +128,9 @@
     background:var(--pine-dark); color:#fff; border:none; border-radius:20px;
     padding:36px 72px; font-size:32px; font-family:Georgia,serif; letter-spacing:0.5px;
     cursor:pointer; box-shadow:0 10px 30px rgba(21,72,118,0.35);
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
   }
+  .btn-gigante:hover{transform:translateY(-2px); box-shadow:0 14px 36px rgba(21,72,118,0.42);}
   .btn-gigante:active{transform:scale(0.98);}
   .inicio-secundarios{display:flex; gap:14px;}
   .btn-admin-inicio{
@@ -156,7 +158,9 @@
     padding:26px 34px; min-width:180px; text-align:center; cursor:pointer;
     font-size:20px; font-family:Georgia,serif; color:var(--ink);
     box-shadow:0 2px 10px rgba(21,72,118,0.07);
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
   }
+  .opcion-card:hover{transform:translateY(-3px); box-shadow:0 8px 22px rgba(21,72,118,0.16);}
   .opcion-card .sub{display:block; font-family:inherit; font-size:13px; color:var(--ink-soft); margin-top:6px; font-family:-apple-system,sans-serif;}
   .opcion-card:active{transform:scale(0.97);}
   .opcion-card.infantil{border-color:var(--infantil);}
@@ -211,20 +215,28 @@
   }
   .toolbar input[type="search"]:focus{outline:2px solid var(--primaria); outline-offset:1px;}
   .btn{
-    padding:11px 16px;
-    border-radius:var(--radius);
+    padding:11px 18px;
+    border-radius:10px;
     border:1px solid var(--line);
     background:var(--paper-raised);
     color:var(--ink);
     font-size:14px;
+    font-weight:600;
     cursor:pointer;
     white-space:nowrap;
+    box-shadow:0 1px 3px rgba(21,72,118,0.08);
+    transition:transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
   }
-  .btn:active{transform:translateY(1px);}
-  .btn-primary{background:var(--pine); color:#fff; border-color:var(--pine);}
-  .btn-accent{background:var(--accent); color:#fff; border-color:var(--accent);}
-  .btn-ghost{background:transparent; border-color:transparent; color:var(--ink-soft);}
+  .btn:hover{box-shadow:0 3px 10px rgba(21,72,118,0.14); transform:translateY(-1px);}
+  .btn:active{transform:translateY(1px); box-shadow:0 1px 2px rgba(21,72,118,0.1);}
+  .btn-primary{background:var(--pine); color:#fff; border-color:var(--pine); box-shadow:0 2px 8px rgba(21,72,118,0.28);}
+  .btn-primary:hover{background:var(--pine-dark); box-shadow:0 4px 14px rgba(21,72,118,0.35);}
+  .btn-accent{background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 2px 8px rgba(179,63,63,0.28);}
+  .btn-accent:hover{background:var(--accent-dark); box-shadow:0 4px 14px rgba(179,63,63,0.35);}
+  .btn-ghost{background:transparent; border-color:transparent; color:var(--ink-soft); box-shadow:none;}
+  .btn-ghost:hover{background:var(--paper-soft); box-shadow:none; transform:none;}
   .btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .btn:disabled{opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none;}
 
   #list{
     flex:1;
@@ -242,7 +254,9 @@
     cursor:pointer;
     user-select:none;
     box-shadow:0 1px 4px rgba(21,72,118,0.05);
+    transition:box-shadow 0.15s ease, transform 0.1s ease;
   }
+  .row:hover{box-shadow:0 3px 10px rgba(21,72,118,0.1);}
   .row:active{transform:scale(0.997);}
   .row .name{flex:1; min-width:0; font-size:16.5px; overflow-wrap:anywhere;}
   .row .name .sub{display:block; font-size:12.5px; color:var(--ink-soft); margin-top:1px;}
@@ -274,7 +288,35 @@
     width:40px; height:40px; border-radius:50%; border:2px solid var(--line);
     background:var(--paper-raised); font-size:18px; line-height:1; cursor:pointer;
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    transition:transform 0.12s ease, box-shadow 0.12s ease;
   }
+  .btn-accion:hover{transform:scale(1.08); box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+  .admin-alumnos-filtros{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
+  .admin-alumnos-filtros input[type="search"]{flex:2; min-width:220px;}
+  .admin-alumnos-filtros select{flex:1; min-width:150px;}
+  .admin-alumnos-filtros input, .admin-alumnos-filtros select{
+    padding:10px 12px; border:1px solid var(--line); border-radius:10px; font-size:14.5px; background:var(--paper);
+  }
+  .admin-contador-alumnos{font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;}
+  .admin-lista-alumnos{max-height:480px; overflow-y:auto; border:1px solid var(--line); border-radius:12px;}
+  .fila-alumno-admin{
+    display:flex; align-items:center; gap:12px; padding:11px 14px;
+    border-bottom:1px solid var(--line); cursor:pointer; transition:background 0.12s ease;
+  }
+  .fila-alumno-admin:last-child{border-bottom:none;}
+  .fila-alumno-admin:hover{background:var(--paper-soft);}
+  .fila-alumno-admin .nombre{flex:1; font-weight:600; font-size:14.5px;}
+  .fila-alumno-admin .nombre .sub{display:block; font-weight:400; color:var(--ink-soft); font-size:12.5px;}
+  .fila-alumno-admin .chip-estado-si{background:var(--primaria-bg); color:#265C30; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:20px;}
+  .fila-alumno-admin .chip-estado-no{background:#EFEFEF; color:#7A7A7A; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:20px;}
+  .fila-alumno-admin .chip-inactivo{background:#F3E0E0; color:#8F3232; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:20px;}
+  .fila-alumno-admin.seleccionada{background:var(--primaria-bg); border-left:4px solid var(--primaria);}
+  .alumno-elegido-chip{
+    display:flex; align-items:center; gap:10px; background:var(--primaria-bg); border:1.5px solid var(--primaria);
+    border-radius:12px; padding:10px 14px; margin-bottom:12px;
+  }
+  .alumno-elegido-chip strong{color:#265C30;}
+  .alumno-elegido-chip button{margin-left:auto; background:none; border:none; color:var(--accent); font-weight:700; cursor:pointer; font-size:13px;}
   .btn-check{color:var(--ok);}
   .btn-check.activo{background:var(--ok); border-color:var(--ok); color:#fff;}
   .btn-x{color:var(--accent);}
@@ -923,16 +965,54 @@
         </div>
         <div id="admin-duplicados-resultado" style="margin-top:14px;"></div>
 
-        <div style="margin-top:24px; padding-top:18px; border-top:1px solid var(--line);">
-          <h3 style="font-family:Georgia,serif; margin:0 0 10px 0;">Editar un alumno</h3>
+        <div style="margin-top:26px; padding-top:18px; border-top:1px solid var(--line);">
+          <h3 style="font-family:Georgia,serif; margin:0 0 12px 0;">Base de datos de alumnos</h3>
+          <div class="admin-alumnos-filtros">
+            <input type="search" id="admin-buscador-alumnos" placeholder="Buscar por nombre o apellidos…">
+            <select id="admin-filtro-activo">
+              <option value="activos">Solo activos</option>
+              <option value="inactivos">Solo inactivos</option>
+              <option value="todos">Todos</option>
+            </select>
+            <select id="admin-filtro-etapa-alumnos">
+              <option value="">Todas las etapas</option>
+              <option value="Infantil">Infantil</option>
+              <option value="Primaria">Primaria</option>
+              <option value="Secundaria">Secundaria + CFPB</option>
+              <option value="AulaEnclave">AE + TVA</option>
+            </select>
+          </div>
+          <button class="btn btn-accent" id="btn-comprobar-inactivos-inscritos" style="margin-bottom:12px;">⚠ Comprobar inactivos con el comedor asignado por error</button>
+          <button class="btn" id="btn-eliminar-inactivos" style="margin-bottom:12px; margin-left:8px; color:var(--accent-dark); border-color:var(--accent);">🗑 Eliminar definitivamente todos los inactivos</button>
+          <div id="admin-contador-alumnos" class="admin-contador-alumnos"></div>
+          <div id="admin-lista-alumnos" class="admin-lista-alumnos"></div>
+        </div>
+
+        <div style="margin-top:26px; padding-top:18px; border-top:1px solid var(--line);">
+          <h3 style="font-family:Georgia,serif; margin:0 0 10px 0;">Cambio masivo de inscripción al comedor</h3>
+          <p style="color:var(--ink-soft); font-size:13.5px; margin-top:0;">Cambia de una vez el estado (inscrito / no inscrito) de todos los alumnos activos de una etapa y/o grupo concreto, en vez de uno por uno.</p>
           <div class="field-row">
-            <div class="field" style="flex:2;"><label>Buscar alumno</label>
-              <select id="admin-buscar-alumno"><option value="">Selecciona un alumno…</option></select>
+            <div class="field"><label>Etapa</label>
+              <select id="masivo-etapa">
+                <option value="">Todas las etapas</option>
+                <option value="Infantil">Infantil</option>
+                <option value="Primaria">Primaria</option>
+                <option value="Secundaria">Secundaria + CFPB</option>
+                <option value="AulaEnclave">AE + TVA</option>
+              </select>
             </div>
-            <div class="field" style="flex:0; align-self:flex-end;">
-              <button class="btn btn-primary" id="btn-admin-editar-alumno">Editar</button>
+            <div class="field"><label>Grupo</label>
+              <select id="masivo-grupo"><option value="">Todos los grupos</option></select>
+            </div>
+            <div class="field"><label>Nuevo estado</label>
+              <select id="masivo-estado">
+                <option value="SI">Inscribir (SÍ)</option>
+                <option value="NO">Dar de baja (NO)</option>
+              </select>
             </div>
           </div>
+          <div id="masivo-preview" class="admin-contador-alumnos"></div>
+          <button class="btn btn-accent" id="btn-aplicar-masivo">Aplicar cambio masivo</button>
         </div>
       </div>
 
@@ -945,9 +1025,11 @@
         <p style="color:var(--ink-soft); font-size:14px;">Programa por adelantado que un alumno no inscrito acceda al comedor en una o varias fechas concretas. Se marcará resaltado en su grupo esos días, y aparecerá el aviso verde en la pantalla de inicio cuando corresponda.</p>
         <div class="field-row">
           <div class="field" style="flex:2;"><label>Alumno (no inscrito)</label>
-            <select id="extra-alumno"><option value="">Selecciona un alumno no inscrito…</option></select>
+            <input type="search" id="extra-buscador-alumno" placeholder="Buscar por nombre o apellidos…">
           </div>
         </div>
+        <div id="extra-alumno-seleccionado" class="hidden"></div>
+        <div id="extra-lista-alumnos" class="admin-lista-alumnos" style="max-height:240px; margin-bottom:14px;"></div>
         <div class="field-row">
           <div class="field"><label>Fecha</label><input type="date" id="extra-fecha"></div>
           <div class="field" style="flex:0; align-self:flex-end;"><button class="btn" id="btn-extra-add-fecha">+ Añadir fecha</button></div>
@@ -1574,6 +1656,17 @@ function refrescarVistaActual(){
   if(vistaActual === "etapa") renderOpcionesEtapa();
   else if(vistaActual === "grupo") renderOpcionesGrupo();
   else if(vistaActual === "lista") pintarLista();
+  // Si el panel Administrador está abierto en la pestaña de Alumnos ahora mismo (aquí
+  // o en cualquier otro dispositivo sincronizado), refrescamos también su lista sola,
+  // sin que haga falta cerrar y volver a abrir nada.
+  if(adminPanelActual === "alumnos" && !document.getElementById("modal-administrador").classList.contains("hidden")){
+    pintarListaAlumnosAdmin();
+    pintarPreviewMasivo();
+  }
+  if(adminPanelActual === "extraordinarios" && !document.getElementById("modal-administrador").classList.contains("hidden")){
+    pintarListaExtraAlumnos();
+    pintarSeleccionExtraAlumno();
+  }
 }
 
 function pintarSidebarInicio(){
@@ -1853,13 +1946,160 @@ document.querySelectorAll("[data-close]").forEach(function(btn){
 /* ---------- Añadir / editar alumno manual ---------- */
 var editandoAlumnoId = null;
 
-function poblarBuscadorAlumnoAdmin(){
-  var sel = document.getElementById("admin-buscar-alumno");
-  var lista = alumnos.slice().sort(function(a,b){ return nombreMostrar(a).localeCompare(nombreMostrar(b),"es"); });
-  sel.innerHTML = '<option value="">Selecciona un alumno…</option>' + lista.map(function(a){
-    return '<option value="'+a.id+'">'+nombreMostrar(a)+(a.grupo?' ('+a.grupo+')':'')+(a.activo===false?' — inactivo':'')+'</option>';
+var soloComprobarInactivosInscritos = false;
+function pintarListaAlumnosAdmin(){
+  var cont = document.getElementById("admin-lista-alumnos");
+  var contador = document.getElementById("admin-contador-alumnos");
+  if(!cont) return;
+  var busqueda = normaliza(document.getElementById("admin-buscador-alumnos").value);
+  var filtroActivo = document.getElementById("admin-filtro-activo").value;
+  var filtroEtapa = document.getElementById("admin-filtro-etapa-alumnos").value;
+
+  var lista = alumnos.filter(function(a){
+    if(filtroActivo === "activos" && a.activo === false) return false;
+    if(filtroActivo === "inactivos" && a.activo !== false) return false;
+    if(filtroEtapa && a.nivel !== filtroEtapa) return false;
+    if(busqueda && normaliza(nombreMostrar(a)).indexOf(busqueda) === -1) return false;
+    if(soloComprobarInactivosInscritos && !(a.activo===false && a.estado==="SI")) return false;
+    return true;
+  }).sort(function(a,b){ return nombreMostrar(a).localeCompare(nombreMostrar(b),"es"); });
+
+  if(soloComprobarInactivosInscritos){
+    contador.innerHTML = lista.length===0
+      ? '<span style="color:var(--ok); font-weight:600;">✓ Ningún alumno inactivo tiene el comedor asignado. Todo correcto.</span>'
+      : '<span style="color:var(--accent-dark); font-weight:600;">⚠ '+lista.length+' alumno'+(lista.length===1?"":"s")+' inactivo'+(lista.length===1?"":"s")+' tiene'+(lista.length===1?"":"n")+' el comedor asignado por error</span>';
+  } else {
+    contador.textContent = lista.length+" alumno"+(lista.length===1?"":"s")+" de "+alumnos.length+" en total en la base de datos";
+  }
+
+  if(lista.length === 0){
+    cont.innerHTML = '<p style="padding:16px; color:var(--ink-soft); text-align:center;">Ningún alumno coincide con la búsqueda.</p>';
+    return;
+  }
+  var chipClaseEstado = {Infantil:"chip-infantil", Primaria:"chip-primaria", Secundaria:"chip-secundaria", AulaEnclave:"chip-enclave"};
+  cont.innerHTML = lista.map(function(a){
+    return '<div class="fila-alumno-admin" data-alumno-id="'+a.id+'">'
+      + '<span class="chip '+chipClaseEstado[a.nivel]+'">'+(NIVEL_LABEL[a.nivel]||a.nivel)+'</span>'
+      + '<span class="nombre">'+nombreMostrar(a)+'<span class="sub">'+(a.grupo||"Sin grupo")+'</span></span>'
+      + (a.activo===false ? '<span class="chip-inactivo">Inactivo</span>' : '')
+      + '<span class="'+(a.estado==="SI"?"chip-estado-si":"chip-estado-no")+'">'+(a.estado==="SI"?"Inscrito":"No inscrito")+'</span>'
+      + '</div>';
   }).join("");
+  cont.querySelectorAll("[data-alumno-id]").forEach(function(fila){
+    fila.addEventListener("click", function(){
+      var a = alumnos.find(function(x){ return x.id===fila.getAttribute("data-alumno-id"); });
+      if(a) abrirEditarAlumno(a);
+    });
+  });
 }
+["admin-buscador-alumnos","admin-filtro-activo","admin-filtro-etapa-alumnos"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", function(){ soloComprobarInactivosInscritos=false; pintarListaAlumnosAdmin(); });
+  document.getElementById(id).addEventListener("change", function(){ soloComprobarInactivosInscritos=false; pintarListaAlumnosAdmin(); });
+});
+document.getElementById("btn-comprobar-inactivos-inscritos").addEventListener("click", function(){
+  document.getElementById("admin-buscador-alumnos").value = "";
+  document.getElementById("admin-filtro-activo").value = "inactivos";
+  document.getElementById("admin-filtro-etapa-alumnos").value = "";
+  soloComprobarInactivosInscritos = true;
+  pintarListaAlumnosAdmin();
+});
+
+document.getElementById("btn-eliminar-inactivos").addEventListener("click", function(){
+  var inactivos = alumnos.filter(function(a){ return a.activo === false; });
+  if(inactivos.length === 0){ toast("No hay ningún alumno inactivo que eliminar"); return; }
+  var confirmacion1 = confirm(
+    "Vas a ELIMINAR DEFINITIVAMENTE "+inactivos.length+" alumno"+(inactivos.length===1?"":"s")+" inactivo"+(inactivos.length===1?"":"s")+" de la base de datos.\n\n" +
+    "Esto no se puede deshacer. Sus registros de asistencia pasados NO se borrarán, pero dejarán de mostrar su nombre en los informes antiguos (aparecerán como \"alumno eliminado\").\n\n" +
+    "¿Quieres continuar?"
+  );
+  if(!confirmacion1) return;
+  var confirmacion2 = confirm("Última confirmación: se eliminarán "+inactivos.length+" fichas de alumno para siempre. ¿Seguro que quieres continuar?");
+  if(!confirmacion2) return;
+
+  conCarga(function(){
+    var pendientes = inactivos.slice();
+    function siguienteLote(){
+      if(pendientes.length === 0) return Promise.resolve();
+      var trozo = pendientes.splice(0, 400);
+      var batch = db.batch();
+      trozo.forEach(function(a){ batch.delete(alumnosCol.doc(a.id)); });
+      return batch.commit().then(siguienteLote);
+    }
+    return siguienteLote();
+  }).then(function(){
+    toast(inactivos.length+" alumnos inactivos eliminados definitivamente");
+    document.getElementById("admin-filtro-activo").value = "activos";
+    soloComprobarInactivosInscritos = false;
+    pintarListaAlumnosAdmin();
+  });
+});
+
+/* ---------- Cambio masivo de inscripción ---------- */
+function alumnosAfectadosPorMasivo(){
+  var etapa = document.getElementById("masivo-etapa").value;
+  var grupo = document.getElementById("masivo-grupo").value;
+  var nuevoEstado = document.getElementById("masivo-estado").value;
+  return alumnos.filter(function(a){
+    if(a.activo === false) return false;
+    if(etapa && a.nivel !== etapa) return false;
+    if(grupo && a.grupo !== grupo) return false;
+    if(a.estado === nuevoEstado) return false; // ya están en ese estado, no hace falta tocarlos
+    return true;
+  });
+}
+function pintarGruposMasivo(){
+  var etapa = document.getElementById("masivo-etapa").value;
+  var selGrupo = document.getElementById("masivo-grupo");
+  var valorPrevio = selGrupo.value;
+  var grupos = {};
+  alumnos.forEach(function(a){
+    if(a.activo===false) return;
+    if(etapa && a.nivel !== etapa) return;
+    if(a.grupo) grupos[a.grupo] = true;
+  });
+  var lista = Object.keys(grupos).sort(function(a,b){ return a.localeCompare(b,"es"); });
+  selGrupo.innerHTML = '<option value="">Todos los grupos</option>' + lista.map(function(g){ return '<option value="'+g+'">'+g+'</option>'; }).join("");
+  if(lista.indexOf(valorPrevio) !== -1) selGrupo.value = valorPrevio;
+}
+function pintarPreviewMasivo(){
+  var afectados = alumnosAfectadosPorMasivo();
+  var nuevoEstado = document.getElementById("masivo-estado").value;
+  var preview = document.getElementById("masivo-preview");
+  if(afectados.length === 0){
+    preview.innerHTML = 'No hay ningún alumno activo que cambiar con esta selección (o ya están todos en ese estado).';
+  } else {
+    preview.innerHTML = 'Se cambiarán <strong>'+afectados.length+'</strong> alumno'+(afectados.length===1?"":"s")+' a "'+(nuevoEstado==="SI"?"Inscrito":"No inscrito")+'".';
+  }
+}
+document.getElementById("masivo-etapa").addEventListener("change", function(){ pintarGruposMasivo(); pintarPreviewMasivo(); });
+["masivo-grupo","masivo-estado"].forEach(function(id){
+  document.getElementById(id).addEventListener("change", pintarPreviewMasivo);
+});
+document.getElementById("btn-aplicar-masivo").addEventListener("click", function(){
+  var afectados = alumnosAfectadosPorMasivo();
+  var nuevoEstado = document.getElementById("masivo-estado").value;
+  if(afectados.length === 0){ toast("No hay ningún alumno que cambiar con esta selección"); return; }
+  var etapaTxt = document.getElementById("masivo-etapa").value;
+  var grupoTxt = document.getElementById("masivo-grupo").value;
+  var ambito = grupoTxt ? ("del grupo "+grupoTxt) : (etapaTxt ? ("de "+NIVEL_LABEL[etapaTxt]) : "de todo el centro");
+  if(!confirm("Vas a cambiar a "+afectados.length+" alumno"+(afectados.length===1?"":"s")+" "+ambito+" a \""+(nuevoEstado==="SI"?"Inscrito":"No inscrito")+"\". ¿Continuar?")) return;
+
+  conCarga(function(){
+    var pendientes = afectados.slice();
+    function siguienteLote(){
+      if(pendientes.length === 0) return Promise.resolve();
+      var trozo = pendientes.splice(0, 400);
+      var batch = db.batch();
+      trozo.forEach(function(a){ batch.set(alumnosCol.doc(a.id), {estado:nuevoEstado}, {merge:true}); });
+      return batch.commit().then(siguienteLote);
+    }
+    return siguienteLote();
+  }).then(function(){
+    toast(afectados.length+" alumnos actualizados");
+    pintarPreviewMasivo();
+    pintarListaAlumnosAdmin();
+  });
+});
 
 function poblarListaGruposExistentes(nivel){
   var datalist = document.getElementById("lista-grupos-existentes");
@@ -1885,12 +2125,8 @@ document.getElementById("btn-admin-add-alumno").addEventListener("click", functi
   abrir("modal-alumno");
 });
 
-document.getElementById("btn-admin-editar-alumno").addEventListener("click", function(){
-  var id = document.getElementById("admin-buscar-alumno").value;
-  if(!id){ toast("Elige primero un alumno de la lista"); return; }
-  var a = alumnos.find(function(x){ return x.id===id; });
-  if(!a){ toast("No se ha encontrado ese alumno"); return; }
-  editandoAlumnoId = id;
+function abrirEditarAlumno(a){
+  editandoAlumnoId = a.id;
   document.getElementById("modal-alumno-titulo").textContent = "Editar alumno";
   document.getElementById("in-apellido1").value = a.primerApellido||"";
   document.getElementById("in-apellido2").value = a.segundoApellido||"";
@@ -1900,7 +2136,7 @@ document.getElementById("btn-admin-editar-alumno").addEventListener("click", fun
   document.getElementById("in-estado").value = a.estado||"SI";
   poblarListaGruposExistentes(a.nivel||"Infantil");
   abrir("modal-alumno");
-});
+}
 
 document.getElementById("btn-guardar-alumno").addEventListener("click", function(){
   var apellido1 = document.getElementById("in-apellido1").value.trim();
@@ -1918,7 +2154,7 @@ document.getElementById("btn-guardar-alumno").addEventListener("click", function
       return alumnosCol.doc(idAEditar).set(datos, {merge:true});
     }).then(function(){
       toast("Alumno actualizado");
-      poblarBuscadorAlumnoAdmin();
+      pintarListaAlumnosAdmin();
     });
   } else {
     var nuevoId = alumnosCol.doc().id;
@@ -1927,7 +2163,7 @@ document.getElementById("btn-guardar-alumno").addEventListener("click", function
       return alumnosCol.doc(nuevoId).set(datos);
     }).then(function(){
       toast("Alumno añadido");
-      poblarBuscadorAlumnoAdmin();
+      pintarListaAlumnosAdmin();
     });
   }
   editandoAlumnoId = null;
@@ -1999,7 +2235,9 @@ function pintarResumenDiaAdmin(){
   });
 }
 
+var adminPanelActual = null;
 function mostrarPanelAdmin(panel){
+  adminPanelActual = panel;
   pintarResumenDiaAdmin();
   document.getElementById("admin-panel-alumnos").classList.toggle("hidden", panel!=="alumnos");
   document.getElementById("admin-panel-registros").classList.toggle("hidden", panel!=="registros");
@@ -2020,7 +2258,9 @@ function mostrarPanelAdmin(panel){
     cargarRegistrosAdmin(document.getElementById("admin-fecha-registros").value);
   }
   if(panel === "alumnos"){
-    poblarBuscadorAlumnoAdmin();
+    pintarListaAlumnosAdmin();
+    pintarGruposMasivo();
+    pintarPreviewMasivo();
   }
   if(panel === "extraordinarios"){
     poblarFormularioExtra();
@@ -2470,18 +2710,64 @@ function accesoExtraHoy(alumnoId){
   return accesosExtra.find(function(x){ return x.alumnoId===alumnoId && x.fecha===hoy; });
 }
 
+var extraAlumnoSeleccionadoId = null;
+
 function poblarFormularioExtra(){
-  var sel = document.getElementById("extra-alumno");
-  var lista = alumnos.filter(function(a){ return a.estado==="NO" && a.activo!==false; })
-    .sort(function(a,b){ return nombreMostrar(a).localeCompare(nombreMostrar(b),"es"); });
-  sel.innerHTML = '<option value="">Selecciona un alumno no inscrito…</option>' + lista.map(function(a){
-    return '<option value="'+a.id+'">'+nombreMostrar(a)+(a.grupo?' ('+a.grupo+')':'')+'</option>';
-  }).join("");
+  extraAlumnoSeleccionadoId = null;
+  document.getElementById("extra-buscador-alumno").value = "";
   fechasExtraPendientes = [];
   document.getElementById("extra-fecha").value = "";
   document.getElementById("extra-motivo").value = "";
+  pintarSeleccionExtraAlumno();
+  pintarListaExtraAlumnos();
   pintarFechasExtraPendientes();
 }
+
+function pintarSeleccionExtraAlumno(){
+  var cont = document.getElementById("extra-alumno-seleccionado");
+  var listaCont = document.getElementById("extra-lista-alumnos");
+  if(!extraAlumnoSeleccionadoId){
+    cont.classList.add("hidden");
+    cont.innerHTML = "";
+    listaCont.classList.remove("hidden");
+    return;
+  }
+  var a = alumnos.find(function(x){ return x.id===extraAlumnoSeleccionadoId; });
+  if(!a){ extraAlumnoSeleccionadoId = null; pintarSeleccionExtraAlumno(); return; }
+  cont.innerHTML = '<div class="alumno-elegido-chip">Elegido: <strong>'+nombreMostrar(a)+'</strong> ('+(NIVEL_LABEL[a.nivel]||a.nivel)+' · '+(a.grupo||"sin grupo")+')<button id="btn-extra-cambiar-alumno">Cambiar</button></div>';
+  cont.classList.remove("hidden");
+  listaCont.classList.add("hidden");
+  document.getElementById("btn-extra-cambiar-alumno").addEventListener("click", function(){
+    extraAlumnoSeleccionadoId = null;
+    pintarSeleccionExtraAlumno();
+  });
+}
+
+function pintarListaExtraAlumnos(){
+  var cont = document.getElementById("extra-lista-alumnos");
+  var busqueda = normaliza(document.getElementById("extra-buscador-alumno").value);
+  var lista = alumnos.filter(function(a){ return a.estado==="NO" && a.activo!==false; })
+    .filter(function(a){ return !busqueda || normaliza(nombreMostrar(a)).indexOf(busqueda) !== -1; })
+    .sort(function(a,b){ return nombreMostrar(a).localeCompare(nombreMostrar(b),"es"); });
+  if(lista.length === 0){
+    cont.innerHTML = '<p style="padding:16px; color:var(--ink-soft); text-align:center;">Ningún alumno no inscrito coincide con la búsqueda.</p>';
+    return;
+  }
+  var chipClaseEstado = {Infantil:"chip-infantil", Primaria:"chip-primaria", Secundaria:"chip-secundaria", AulaEnclave:"chip-enclave"};
+  cont.innerHTML = lista.slice(0,200).map(function(a){
+    return '<div class="fila-alumno-admin" data-alumno-id="'+a.id+'">'
+      + '<span class="chip '+chipClaseEstado[a.nivel]+'">'+(NIVEL_LABEL[a.nivel]||a.nivel)+'</span>'
+      + '<span class="nombre">'+nombreMostrar(a)+'<span class="sub">'+(a.grupo||"Sin grupo")+'</span></span>'
+      + '</div>';
+  }).join("");
+  cont.querySelectorAll("[data-alumno-id]").forEach(function(fila){
+    fila.addEventListener("click", function(){
+      extraAlumnoSeleccionadoId = fila.getAttribute("data-alumno-id");
+      pintarSeleccionExtraAlumno();
+    });
+  });
+}
+document.getElementById("extra-buscador-alumno").addEventListener("input", pintarListaExtraAlumnos);
 
 function pintarFechasExtraPendientes(){
   var cont = document.getElementById("extra-fechas-pendientes");
@@ -2508,7 +2794,7 @@ document.getElementById("btn-extra-add-fecha").addEventListener("click", functio
 });
 
 document.getElementById("btn-extra-guardar").addEventListener("click", function(){
-  var alumnoId = document.getElementById("extra-alumno").value;
+  var alumnoId = extraAlumnoSeleccionadoId;
   var motivo = document.getElementById("extra-motivo").value.trim();
   if(!alumnoId){ toast("Elige un alumno no inscrito"); return; }
   if(fechasExtraPendientes.length === 0){ toast("Añade al menos una fecha"); return; }
