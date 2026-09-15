@@ -984,6 +984,7 @@
           </div>
           <button class="btn btn-accent" id="btn-comprobar-inactivos-inscritos" style="margin-bottom:12px;">⚠ Comprobar inactivos con el comedor asignado por error</button>
           <button class="btn" id="btn-eliminar-inactivos" style="margin-bottom:12px; margin-left:8px; color:var(--accent-dark); border-color:var(--accent);">🗑 Eliminar definitivamente todos los inactivos</button>
+          <button class="btn btn-accent" id="btn-borrar-todos-alumnos" style="margin-bottom:12px; margin-left:8px;">💥 Borrar TODOS los alumnos (activos e inactivos)</button>
           <div id="admin-contador-alumnos" class="admin-contador-alumnos"></div>
           <div id="admin-lista-alumnos" class="admin-lista-alumnos"></div>
         </div>
@@ -2030,6 +2031,39 @@ document.getElementById("btn-eliminar-inactivos").addEventListener("click", func
     toast(inactivos.length+" alumnos inactivos eliminados definitivamente");
     document.getElementById("admin-filtro-activo").value = "activos";
     soloComprobarInactivosInscritos = false;
+    pintarListaAlumnosAdmin();
+  });
+});
+
+document.getElementById("btn-borrar-todos-alumnos").addEventListener("click", function(){
+  var total = alumnos.length;
+  if(total === 0){ toast("No hay ningún alumno en la base de datos"); return; }
+  var confirmacion1 = confirm(
+    "Vas a BORRAR TODOS los alumnos de la base de datos (activos e inactivos): "+total+" en total.\n\n" +
+    "Esto no se puede deshacer. Los registros de asistencia ya guardados NO se borrarán, " +
+    "pero dejarán de mostrar el nombre del alumno en todo el histórico (aparecerá \"alumno eliminado\").\n\n" +
+    "¿Quieres continuar?"
+  );
+  if(!confirmacion1) return;
+  var escrito = prompt("Para confirmar esta acción tan destructiva, escribe exactamente: BORRAR TODO");
+  if(escrito === null) return;
+  if(escrito.trim().toUpperCase() !== "BORRAR TODO"){
+    toast("Texto incorrecto. No se ha borrado nada.");
+    return;
+  }
+
+  conCarga(function(){
+    var pendientes = alumnos.slice();
+    function siguienteLote(){
+      if(pendientes.length === 0) return Promise.resolve();
+      var trozo = pendientes.splice(0, 400);
+      var batch = db.batch();
+      trozo.forEach(function(a){ batch.delete(alumnosCol.doc(a.id)); });
+      return batch.commit().then(siguienteLote);
+    }
+    return siguienteLote();
+  }).then(function(){
+    toast(total+" alumnos eliminados de la base de datos");
     pintarListaAlumnosAdmin();
   });
 });
