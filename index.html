@@ -1208,14 +1208,17 @@
   </div>
 </div>
 
+<!-- MODAL: validar in situ los alumnos pendientes de un grupo concreto, sin salir de esta tarjeta -->
 <div class="overlay hidden" id="modal-pendientes-hoy-detalle">
-  <div class="modal">
+  <div class="modal modal-wide">
     <div class="modal-head"><h2 id="pendientes-hoy-detalle-titulo"></h2><button class="x" data-close>&times;</button></div>
     <div class="modal-body">
+      <p style="margin-top:0; color:var(--ink-soft); font-size:13.5px;">Marca ✓ presente o ✗ ausente a cada alumno pendiente de este grupo. Puedes validar aunque no marques a todos: los que dejes sin marcar seguirán apareciendo como pendientes.</p>
       <div id="pendientes-hoy-detalle-lista"></div>
     </div>
     <div class="modal-foot">
       <button class="btn" id="btn-pendientes-hoy-volver">&larr; Volver a los grupos</button>
+      <button class="btn btn-primary" id="btn-pendientes-hoy-detalle-finalizar">Finalizar y validar</button>
     </div>
   </div>
 </div>
@@ -1869,47 +1872,7 @@ function pintarLista(){
     return;
   }
 
-  var chipClass = {Infantil:"chip-infantil", Primaria:"chip-primaria", Secundaria:"chip-secundaria", AulaEnclave:"chip-enclave"};
-  var html = "";
-  lista.forEach(function(a){
-    var yaRegistrado = registradosHoyMap[a.id];
-    var sesion = sessionMarcados[a.id];
-    var noInscrito = a.estado === "NO";
-    var estadoAsistencia = yaRegistrado ? (yaRegistrado.estadoAsistencia||"presente") : (sesion ? sesion.estadoAsistencia : null);
-    var extraHoy = noInscrito ? accesoExtraHoy(a.id) : null;
-
-    var claseFila;
-    var estadoTexto;
-    if(estadoAsistencia === "presente"){
-      claseFila = noInscrito ? "no-inscrito pendiente" : "pendiente";
-      estadoTexto = yaRegistrado ? ("✓ Presente (guardado "+yaRegistrado.hora+")") : "✓ Presente (pendiente de guardar)";
-    } else if(estadoAsistencia === "ausente"){
-      claseFila = "ausente";
-      estadoTexto = yaRegistrado ? "✗ Ausente (guardado)" : "✗ Ausente (pendiente de guardar)";
-    } else if(extraHoy){
-      claseFila = "extraordinario";
-      estadoTexto = "Acceso extraordinario previsto hoy · toca ✓ para confirmar";
-    } else if(noInscrito){
-      claseFila = "no-inscrito";
-      estadoTexto = "No inscrito · toca ✓ si asiste hoy";
-    } else {
-      claseFila = "requiere-accion";
-      estadoTexto = "Pendiente de marcar asistencia";
-    }
-
-    var mostrarX = !noInscrito; // el aspa solo aplica a inscritos
-    html += '<div class="row '+claseFila+'" data-id="'+a.id+'">'
-      + '<span class="chip '+chipClass[a.nivel]+'">'+NIVEL_LABEL[a.nivel]+'</span>'
-      + (noInscrito ? '<span class="chip chip-no-inscrito">No inscrito</span>' : '')
-      + '<span class="name">'+nombreMostrar(a)+(a.grupo ? '<span class="sub">'+a.grupo+'</span>' : '')+'</span>'
-      + '<span class="status">'+estadoTexto+'</span>'
-      + '<span class="acciones">'
-      +   '<button class="btn-accion btn-check '+(estadoAsistencia==="presente"?"activo":"")+'" data-id="'+a.id+'" data-accion="presente" title="Marcar presente">✓</button>'
-      +   (mostrarX ? '<button class="btn-accion btn-x '+(estadoAsistencia==="ausente"?"activo":"")+'" data-id="'+a.id+'" data-accion="ausente" title="Marcar ausente">✗</button>' : '')
-      + '</span>'
-      + '</div>';
-  });
-  cont.innerHTML = html;
+  cont.innerHTML = lista.map(function(a){ return filaAlumnoHTML(a, hoy, registradosHoyMap); }).join("");
 
   cont.querySelectorAll(".btn-accion").forEach(function(btn){
     btn.addEventListener("click", function(e){
@@ -1919,6 +1882,49 @@ function pintarLista(){
   });
 
   pintarResumenSesion();
+}
+
+// Construye el HTML de una fila de alumno (usado tanto en la lista normal de "pasar
+// lista" como en la validación rápida de un grupo desde la tarjeta de pendientes),
+// para que ambas pantallas se comporten exactamente igual.
+function filaAlumnoHTML(a, hoy, registradosHoyMap){
+  var chipClass = {Infantil:"chip-infantil", Primaria:"chip-primaria", Secundaria:"chip-secundaria", AulaEnclave:"chip-enclave"};
+  var yaRegistrado = registradosHoyMap[a.id];
+  var sesion = sessionMarcados[a.id];
+  var noInscrito = a.estado === "NO";
+  var estadoAsistencia = yaRegistrado ? (yaRegistrado.estadoAsistencia||"presente") : (sesion ? sesion.estadoAsistencia : null);
+  var extraHoy = noInscrito ? accesoExtraHoy(a.id) : null;
+
+  var claseFila;
+  var estadoTexto;
+  if(estadoAsistencia === "presente"){
+    claseFila = noInscrito ? "no-inscrito pendiente" : "pendiente";
+    estadoTexto = yaRegistrado ? ("✓ Presente (guardado "+yaRegistrado.hora+")") : "✓ Presente (pendiente de guardar)";
+  } else if(estadoAsistencia === "ausente"){
+    claseFila = "ausente";
+    estadoTexto = yaRegistrado ? "✗ Ausente (guardado)" : "✗ Ausente (pendiente de guardar)";
+  } else if(extraHoy){
+    claseFila = "extraordinario";
+    estadoTexto = "Acceso extraordinario previsto hoy · toca ✓ para confirmar";
+  } else if(noInscrito){
+    claseFila = "no-inscrito";
+    estadoTexto = "No inscrito · toca ✓ si asiste hoy";
+  } else {
+    claseFila = "requiere-accion";
+    estadoTexto = "Pendiente de marcar asistencia";
+  }
+
+  var mostrarX = !noInscrito; // el aspa solo aplica a inscritos
+  return '<div class="row '+claseFila+'" data-id="'+a.id+'">'
+    + '<span class="chip '+chipClass[a.nivel]+'">'+NIVEL_LABEL[a.nivel]+'</span>'
+    + (noInscrito ? '<span class="chip chip-no-inscrito">No inscrito</span>' : '')
+    + '<span class="name">'+nombreMostrar(a)+(a.grupo ? '<span class="sub">'+a.grupo+'</span>' : '')+'</span>'
+    + '<span class="status">'+estadoTexto+'</span>'
+    + '<span class="acciones">'
+    +   '<button class="btn-accion btn-check '+(estadoAsistencia==="presente"?"activo":"")+'" data-id="'+a.id+'" data-accion="presente" title="Marcar presente">✓</button>'
+    +   (mostrarX ? '<button class="btn-accion btn-x '+(estadoAsistencia==="ausente"?"activo":"")+'" data-id="'+a.id+'" data-accion="ausente" title="Marcar ausente">✗</button>' : '')
+    + '</span>'
+    + '</div>';
 }
 
 function pintarResumenSesion(){
@@ -1948,7 +1954,7 @@ function onTapAccion(alumnoId, accion){
   if(actual && actual.estadoAsistencia === accion){
     // tocar el mismo botón otra vez desmarca (vuelve a pendiente)
     delete sessionMarcados[alumnoId];
-    pintarLista();
+    refrescarTrasMarcar();
     return;
   }
 
@@ -1964,7 +1970,19 @@ function onTapAccion(alumnoId, accion){
   }
 
   sessionMarcados[alumnoId] = {estadoAsistencia:accion, observacion:null, duplicado:false};
-  pintarLista();
+  refrescarTrasMarcar();
+}
+
+// Vuelve a pintar la pantalla que esté activa en este momento (la lista normal de
+// "pasar lista", o la validación rápida abierta desde la tarjeta de pendientes),
+// para que marcar un alumno se refleje al instante sin importar desde dónde se hizo.
+function refrescarTrasMarcar(){
+  if(!document.getElementById("modal-pendientes-hoy-detalle").classList.contains("hidden")){
+    pintarDetallePendienteGrupo();
+  }
+  if(vistaActual === "lista"){
+    pintarLista();
+  }
 }
 
 document.getElementById("btn-confirmar-observacion").addEventListener("click", function(){
@@ -1973,7 +1991,7 @@ document.getElementById("btn-confirmar-observacion").addEventListener("click", f
   sessionMarcados[pendienteObservacion] = {estadoAsistencia:"presente", observacion:texto, duplicado:false};
   pendienteObservacion = null;
   cerrar("modal-observacion");
-  pintarLista();
+  refrescarTrasMarcar();
 });
 
 /* ---------- Modales genéricos ---------- */
@@ -2295,7 +2313,7 @@ document.getElementById("btn-autorizar").addEventListener("click", function(){
   pendienteDuplicado = null;
   cerrar("modal-admin");
   sessionMarcados[alumnoPendiente] = {estadoAsistencia:accion, observacion:null, duplicado:true};
-  pintarLista();
+  refrescarTrasMarcar();
   toast("Duplicado añadido a la sesión (pendiente de guardar)");
 });
 
@@ -3228,9 +3246,9 @@ function pintarBannerPendientesHoy(){
   } else if(modalPendientesAbierto && modalPendientesAbierto !== "lista" && !document.getElementById("modal-pendientes-hoy-detalle").classList.contains("hidden")){
     var sigue = pendientes.find(function(p){ return p.nivel===modalPendientesAbierto.nivel && p.grupo===modalPendientesAbierto.grupo; });
     if(sigue){
-      pintarDetallePendienteGrupo(sigue);
+      pintarDetallePendienteGrupo();
     } else {
-      // Ese grupo concreto ya se completó: volvemos automáticamente a la lista
+      // Ese grupo concreto ya se ha completado: volvemos automáticamente al listado
       cerrar("modal-pendientes-hoy-detalle");
       modalPendientesAbierto = "lista";
       abrir("modal-pendientes-hoy");
@@ -3258,6 +3276,7 @@ function pintarListaPendientesHoy(pendientes){
         html += '<div class="tarjeta-grupo-hoy tarjeta-grupo-pendiente" data-nivel="'+p.nivel+'" data-grupo="'+p.grupo+'">'
           + '<h4>'+(p.grupo||"—")+'</h4>'
           + '<div class="cifras"><span style="color:var(--accent-dark);"><b>'+p.faltan.length+'</b> por marcar</span></div>'
+          + '<div class="cifras" style="margin-top:6px;"><span style="color:var(--ok); font-weight:600;">Toca para validar ahora →</span></div>'
           + '</div>';
       });
     }
@@ -3268,35 +3287,72 @@ function pintarListaPendientesHoy(pendientes){
   cont.querySelectorAll(".tarjeta-grupo-pendiente").forEach(function(card){
     card.addEventListener("click", function(){
       var nivel = card.getAttribute("data-nivel"), grupo = card.getAttribute("data-grupo");
-      var p = calcularGruposPendientesHoy().find(function(x){ return x.nivel===nivel && x.grupo===grupo; });
-      if(!p) return;
-      modalPendientesAbierto = {nivel:nivel, grupo:grupo};
-      pintarDetallePendienteGrupo(p);
-      cerrar("modal-pendientes-hoy");
-      abrir("modal-pendientes-hoy-detalle");
+      abrirDetallePendienteGrupo(nivel, grupo);
     });
   });
 }
 
-function pintarDetallePendienteGrupo(p){
-  document.getElementById("pendientes-hoy-detalle-titulo").textContent = (NIVEL_LABEL[p.nivel]||p.nivel)+" · "+p.grupo+" — faltan "+p.faltan.length;
-  document.getElementById("pendientes-hoy-detalle-lista").innerHTML =
-    '<ul style="color:var(--accent-dark); font-weight:600; font-size:15px; padding-left:22px;">'
-    + p.faltan.map(function(a){ return '<li>'+nombreMostrar(a)+'</li>'; }).join("")
-    + '</ul>';
+/* Validación de un grupo pendiente directamente desde su propia tarjeta, sin salir
+   de este flujo ni pasar por las pantallas de elegir etapa/grupo. */
+function abrirDetallePendienteGrupo(nivel, grupo){
+  nivelActivo = nivel;
+  grupoActivo = grupo;
+  sessionMarcados = {};
+  modalPendientesAbierto = {nivel:nivel, grupo:grupo};
+  cerrar("modal-pendientes-hoy");
+  pintarDetallePendienteGrupo();
+  abrir("modal-pendientes-hoy-detalle");
 }
 
-document.getElementById("banner-pendientes-hoy").addEventListener("click", function(){
-  modalPendientesAbierto = "lista";
-  document.getElementById("pendientes-hoy-fecha-titulo").textContent = fechaBonita();
-  pintarListaPendientesHoy();
-  abrir("modal-pendientes-hoy");
+function pintarDetallePendienteGrupo(){
+  if(!modalPendientesAbierto || modalPendientesAbierto === "lista") return;
+  var nivel = modalPendientesAbierto.nivel, grupo = modalPendientesAbierto.grupo;
+  nivelActivo = nivel;
+  grupoActivo = grupo;
+  document.getElementById("pendientes-hoy-detalle-titulo").textContent = (NIVEL_LABEL[nivel]||nivel) + " · " + grupo;
+
+  var hoy = hoyISO();
+  var registradosHoyMap = {};
+  registros.filter(function(r){ return r.fecha===hoy; }).forEach(function(r){ registradosHoyMap[r.alumnoId] = r; });
+
+  // Mostramos solo a quien todavía requiere una decisión hoy: los inscritos de este
+  // grupo sin marcar, más cualquier no inscrito del grupo por si asiste hoy también.
+  var lista = alumnos.filter(function(a){
+    return a.nivel===nivel && a.grupo===grupo && a.activo!==false && !registradosHoyMap[a.id];
+  }).sort(function(a,b){ return nombreMostrar(a).localeCompare(nombreMostrar(b), "es"); });
+
+  var cont = document.getElementById("pendientes-hoy-detalle-lista");
+  var btnFinalizar = document.getElementById("btn-pendientes-hoy-detalle-finalizar");
+  if(lista.length === 0){
+    cont.innerHTML = '<div class="empty-state"><h3>Grupo completo</h3><p>Ya se ha validado la asistencia de todos los alumnos de este grupo.</p></div>';
+    btnFinalizar.classList.add("hidden");
+    return;
+  }
+  btnFinalizar.classList.remove("hidden");
+  cont.innerHTML = lista.map(function(a){ return filaAlumnoHTML(a, hoy, registradosHoyMap); }).join("");
+  cont.querySelectorAll(".btn-accion").forEach(function(btn){
+    btn.addEventListener("click", function(e){
+      e.stopPropagation();
+      onTapAccion(btn.getAttribute("data-id"), btn.getAttribute("data-accion"));
+    });
+  });
+}
+
+document.getElementById("btn-pendientes-hoy-detalle-finalizar").addEventListener("click", function(){
+  iniciarFinalizarValidacion();
 });
 document.getElementById("btn-pendientes-hoy-volver").addEventListener("click", function(){
   cerrar("modal-pendientes-hoy-detalle");
   modalPendientesAbierto = "lista";
   abrir("modal-pendientes-hoy");
   pintarListaPendientesHoy();
+});
+
+document.getElementById("banner-pendientes-hoy").addEventListener("click", function(){
+  modalPendientesAbierto = "lista";
+  document.getElementById("pendientes-hoy-fecha-titulo").textContent = fechaBonita();
+  pintarListaPendientesHoy();
+  abrir("modal-pendientes-hoy");
 });
 
 /* ---------- Registros de hoy (público, solo consulta) ---------- */
@@ -3424,7 +3480,7 @@ function alumnoTieneDecision(a){
   return yaRegistrado || !!sessionMarcados[a.id];
 }
 
-document.getElementById("btn-pasar-lista").addEventListener("click", function(){
+function iniciarFinalizarValidacion(){
   var ids = Object.keys(sessionMarcados);
   if(ids.length === 0){ toast("No has marcado ningún alumno todavía"); return; }
 
@@ -3477,6 +3533,10 @@ document.getElementById("btn-pasar-lista").addEventListener("click", function(){
   htmlBloques += '</div></div>';
   document.getElementById("resumen-sesion-bloques").innerHTML = htmlBloques;
   abrir("modal-resumen-sesion");
+}
+
+document.getElementById("btn-pasar-lista").addEventListener("click", function(){
+  iniciarFinalizarValidacion();
 });
 
 document.getElementById("btn-validar-sesion").addEventListener("click", function(){
