@@ -521,16 +521,19 @@
     #print-area{position:absolute; top:0; left:0; width:100%; padding:20px;}
   }
 
-  /* Botón flotante "Registros de hoy" */
+  /* Botón "Registros de hoy": vive dentro del flujo normal de la pantalla de Inicio
+     (ya no es fixed) para que nunca quede flotando encima de otros botones o tarjetas
+     en tablets u otras pantallas. */
+  .fila-registros-hoy{display:flex; justify-content:center; padding:4px 0 2px 0;}
   .btn-flotante-hoy{
-    position:fixed; right:calc(20px + env(safe-area-inset-right)); bottom:calc(20px + env(safe-area-inset-bottom));
+    position:static;
     background:var(--ok); color:#fff; border:none; border-radius:30px;
-    padding:14px 22px; font-size:14.5px; font-weight:600; cursor:pointer;
-    box-shadow:0 8px 22px rgba(62,140,74,0.4); z-index:30;
-    display:flex; align-items:center; gap:8px;
+    padding:12px 20px; font-size:14.5px; font-weight:600; cursor:pointer;
+    box-shadow:0 6px 16px rgba(62,140,74,0.35); z-index:1;
+    display:flex; align-items:center; gap:8px; max-width:100%;
   }
   .btn-flotante-hoy:active{transform:scale(0.97);}
-  .btn-flotante-hoy .punto{width:9px; height:9px; border-radius:50%; background:#fff; opacity:0.85;}
+  .btn-flotante-hoy .punto{width:9px; height:9px; border-radius:50%; background:#fff; opacity:0.85; flex-shrink:0;}
 
   .tarjetas-grupos-hoy{display:flex; flex-wrap:wrap; gap:16px; justify-content:center; padding:6px 2px;}
   .tarjeta-grupo-hoy{
@@ -612,7 +615,7 @@
     .modal-head{padding:12px 18px;}
     .modal-body{padding:14px 18px;}
     .modal-foot{padding:10px 18px;}
-    .btn-flotante-hoy{padding:8px 14px; font-size:12px; bottom:8px; right:8px;}
+    .btn-flotante-hoy{padding:8px 14px; font-size:12px;}
   }
 
   /* Pantallas grandes (tablet en horizontal, monitor de escritorio): un poco más
@@ -764,6 +767,9 @@
         <div class="inicio-titulo-linea1">Servicio de Comedor</div>
         <div class="inicio-titulo-linea2">Echeyde La Laguna</div>
       </div>
+      <div class="fila-registros-hoy">
+        <button class="btn-flotante-hoy" id="btn-registros-hoy"><span class="punto"></span>Registros de hoy · <span id="fecha-btn-registros-hoy"></span></button>
+      </div>
       <div class="fila-botones-principales">
         <button class="btn-gigante" id="btn-ir-pasar-lista">Pasar Lista</button>
         <div class="tarjeta-pendientes-hoy hidden" id="banner-pendientes-hoy">
@@ -777,8 +783,6 @@
       </div>
     </div>
   </div>
-
-  <button class="btn-flotante-hoy" id="btn-registros-hoy"><span class="punto"></span>Registros de hoy · <span id="fecha-btn-registros-hoy"></span></button>
 
   <div class="vista hidden" id="vista-etapa">
     <div class="paso-header"><button class="btn-volver" id="btn-etapa-volver">&larr; Volver</button><h2>Elige la etapa</h2></div>
