@@ -347,6 +347,26 @@
     padding:6px 12px; font-size:13px; display:flex; align-items:center; gap:8px;
   }
   .chip-fecha-pendiente button{background:none; border:none; color:var(--accent); cursor:pointer; font-weight:bold; font-size:14px; padding:0;}
+  .cal-lectivo-cabecera{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+  .cal-lectivo-titulo{font-family:Georgia,serif; font-size:17px; text-transform:capitalize;}
+  .cal-lectivo-grid{display:grid; grid-template-columns:repeat(7, 1fr); gap:6px;}
+  .cal-lectivo-cabeceras{margin-bottom:6px;}
+  .cal-lectivo-diasemana{text-align:center; font-size:12.5px; color:var(--ink-soft); font-weight:600;}
+  .cal-lectivo-celda{
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+    border-radius:10px; border:1px solid var(--line); font-size:14px; cursor:pointer;
+    user-select:none; -webkit-user-select:none; background:#fff;
+  }
+  .cal-lectivo-celda.vacia{border:none; cursor:default;}
+  .cal-lectivo-celda.finde{background:var(--paper-soft); color:var(--ink-soft); cursor:default;}
+  .cal-lectivo-celda.no-lectivo{background:#D97B0E; color:#fff; border-color:#D97B0E; font-weight:600;}
+  .cal-lectivo-celda.seleccionada{background:#FCE3C2; border-color:#D97B0E;}
+  .cal-lectivo-leyenda{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:12.5px; color:var(--ink-soft);}
+  .cal-lectivo-leyenda span{display:flex; align-items:center; gap:6px;}
+  .cal-lectivo-muestra{width:14px; height:14px; border-radius:4px; display:inline-block; border:1px solid var(--line);}
+  .cal-lectivo-muestra.no-lectivo{background:#D97B0E; border-color:#D97B0E;}
+  .cal-lectivo-muestra.finde{background:var(--paper-soft);}
+  .cal-lectivo-muestra.seleccionada{background:#FCE3C2; border-color:#D97B0E;}
   .row.extraordinario{border-color:var(--enclave); background:var(--enclave-bg); border-width:2px;}
   .row.extraordinario .status{color:var(--enclave); font-weight:600;}
   .aviso-pendiente{
@@ -782,7 +802,7 @@
         <button class="btn-gigante" id="btn-ir-pasar-lista">Pasar Lista</button>
         <div class="avisos-grupos-hoy">
           <div class="tarjeta-pendientes-hoy hidden" id="banner-pendientes-hoy">
-            <div class="tph-titulo">⚠ Grupos pendientes hoy</div>
+            <div class="tph-titulo">⚠ Grupos con Registros Pendientes</div>
             <div class="tph-fecha" id="banner-pendientes-hoy-fecha"></div>
           </div>
           <div class="tarjeta-sin-registros-hoy hidden" id="banner-sin-registros-hoy">
@@ -1001,6 +1021,8 @@
       <button class="admin-tab" id="tab-admin-extraordinarios"><span class="icono">✳</span>Accesos Extraordinarios</button>
       <button class="admin-tab" id="tab-admin-dispositivos"><span class="icono">📱</span>Dispositivos</button>
       <button class="admin-tab" id="tab-admin-historial-pendientes"><span class="icono">⚠</span>Histórico de Pendientes</button>
+      <button class="admin-tab" id="tab-admin-sin-registros"><span class="icono">🟧</span>Grupos sin Registros</button>
+      <button class="admin-tab" id="tab-admin-dias-no-lectivos"><span class="icono">📅</span>Días lectivos</button>
       <button class="admin-tab" id="tab-admin-borrado-extraordinario" style="color:var(--accent-dark);"><span class="icono">💥</span>BORRADO EXTRAORDINARIO</button>
     </div>
     <div class="modal-body admin-body">
@@ -1112,6 +1134,18 @@
         <div id="hist-pend-resultado" style="margin-top:14px;"></div>
       </div>
 
+      <div id="admin-panel-dias-no-lectivos" class="hidden">
+        <p style="color:var(--ink-soft); font-size:14px;">Los sábados y domingos ya se consideran no lectivos automáticamente. Marca aquí además los días concretos (vacaciones, festivos locales, jornadas sin comedor…) en los que la app no debe avisar de "Grupos sin Registros". Toca un día, o arrastra con el ratón o el dedo para seleccionar varios días seguidos.</p>
+        <div id="cal-dias-lectivos"></div>
+        <div id="cal-dias-lectivos-acciones" class="hidden" style="margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <button class="btn btn-primary" id="btn-marcar-no-lectivos">Marcar como NO lectivos</button>
+          <button class="btn" id="btn-cancelar-seleccion-lectivos">Cancelar selección</button>
+          <span id="cal-dias-lectivos-resumen" style="color:var(--ink-soft); font-size:13.5px;"></span>
+        </div>
+        <h3 style="font-family:Georgia,serif; margin:28px 0 10px 0; font-size:16px;">Días no lectivos marcados</h3>
+        <div id="lista-dias-no-lectivos" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+      </div>
+
       <div id="admin-panel-borrado-extraordinario" class="hidden">
         <div class="aviso-pendiente" style="margin-bottom:20px;">
           <h3>⚠ Zona de borrado permanente</h3>
@@ -1212,7 +1246,7 @@
 <!-- MODAL: detalle de grupos pendientes hoy -->
 <div class="overlay hidden" id="modal-pendientes-hoy">
   <div class="modal modal-wide">
-    <div class="modal-head"><h2>Grupos pendientes hoy · <span id="pendientes-hoy-fecha-titulo"></span></h2><button class="x" data-close>&times;</button></div>
+    <div class="modal-head"><h2>Grupos con Registros Pendientes · <span id="pendientes-hoy-fecha-titulo"></span></h2><button class="x" data-close>&times;</button></div>
     <div class="modal-body">
       <div id="pendientes-hoy-lista"></div>
     </div>
@@ -1589,11 +1623,14 @@ var alumnosCol = db.collection("alumnos");
 var registrosCol = db.collection("registros");
 var accesosExtraCol = db.collection("accesosExtraordinarios");
 var dispositivosCol = db.collection("dispositivos");
+var diasNoLectivosCol = db.collection("diasNoLectivos"); // doc.id = fecha ISO "YYYY-MM-DD"
 
 /* ---------- Estado ---------- */
 var alumnos = [];       // {id, primerApellido, segundoApellido, nombre, nivel(etapa), grupo, estado:"SI"|"NO"}
 var registros = [];     // {id, alumnoId, fecha:'YYYY-MM-DD', hora:'HH:MM', estadoInscripcion, observacion, validadoDni}
 var accesosExtra = [];  // {id, alumnoId, fecha:'YYYY-MM-DD', motivo}
+var diasNoLectivos = []; // [{id:'YYYY-MM-DD', fecha:'YYYY-MM-DD'}] días marcados manualmente como no lectivos
+var diasNoLectivosMap = {}; // 'YYYY-MM-DD' -> true, para comprobación rápida
 var fechasExtraPendientes = []; // fechas añadidas en el formulario de Accesos Extraordinarios, aún sin guardar
 var nivelActivo = "Todos";
 var grupoActivo = "";
@@ -1671,9 +1708,9 @@ function actualizarEstadoSync(snapshot){
 }
 
 /* ---------- Escuchas en tiempo real (funcionan también offline con caché) ---------- */
-var primeraCargaAlumnos = false, primeraCargaRegistros = false, primeraCargaExtra = false;
+var primeraCargaAlumnos = false, primeraCargaRegistros = false, primeraCargaExtra = false, primeraCargaDiasNoLectivos = false;
 function comprobarPrimeraCarga(){
-  if(primeraCargaAlumnos && primeraCargaRegistros && primeraCargaExtra) ocultarCargando();
+  if(primeraCargaAlumnos && primeraCargaRegistros && primeraCargaExtra && primeraCargaDiasNoLectivos) ocultarCargando();
 }
 
 alumnosCol.onSnapshot({includeMetadataChanges:true}, function(snapshot){
@@ -1693,6 +1730,18 @@ accesosExtraCol.onSnapshot({includeMetadataChanges:true}, function(snapshot){
   primeraCargaExtra = true;
   comprobarPrimeraCarga();
 }, function(err){ console.error("Error leyendo accesos extraordinarios:", err); primeraCargaExtra = true; comprobarPrimeraCarga(); });
+
+// Días marcados manualmente como "no lectivos" (vacaciones, festivos locales, etc.):
+// pocos documentos al año, así que se mantiene la colección completa sincronizada.
+diasNoLectivosCol.onSnapshot({includeMetadataChanges:true}, function(snapshot){
+  diasNoLectivos = snapshot.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+  diasNoLectivosMap = {};
+  diasNoLectivos.forEach(function(x){ diasNoLectivosMap[x.id] = true; });
+  pintarCalendarioDiasLectivos();
+  refrescarVistaActual();
+  primeraCargaDiasNoLectivos = true;
+  comprobarPrimeraCarga();
+}, function(err){ console.error("Error leyendo días no lectivos:", err); primeraCargaDiasNoLectivos = true; comprobarPrimeraCarga(); });
 
 // Solo mantenemos "en vivo" (sincronizados y disponibles offline) los registros de los
 // últimos VENTANA_DIAS días: es lo que hace falta para el día a día en el comedor y evita
@@ -2408,6 +2457,7 @@ function mostrarPanelAdmin(panel){
   document.getElementById("admin-panel-extraordinarios").classList.toggle("hidden", panel!=="extraordinarios");
   document.getElementById("admin-panel-dispositivos").classList.toggle("hidden", panel!=="dispositivos");
   document.getElementById("admin-panel-historial-pendientes").classList.toggle("hidden", panel!=="historial-pendientes");
+  document.getElementById("admin-panel-dias-no-lectivos").classList.toggle("hidden", panel!=="dias-no-lectivos");
   document.getElementById("admin-panel-borrado-extraordinario").classList.toggle("hidden", panel!=="borrado-extraordinario");
   document.getElementById("tab-admin-alumnos").className = "admin-tab"+(panel==="alumnos"?" activo":"");
   document.getElementById("tab-admin-registros").className = "admin-tab"+(panel==="registros"?" activo":"");
@@ -2415,6 +2465,7 @@ function mostrarPanelAdmin(panel){
   document.getElementById("tab-admin-extraordinarios").className = "admin-tab"+(panel==="extraordinarios"?" activo":"");
   document.getElementById("tab-admin-dispositivos").className = "admin-tab"+(panel==="dispositivos"?" activo":"");
   document.getElementById("tab-admin-historial-pendientes").className = "admin-tab"+(panel==="historial-pendientes"?" activo":"");
+  document.getElementById("tab-admin-dias-no-lectivos").className = "admin-tab"+(panel==="dias-no-lectivos"?" activo":"");
   document.getElementById("tab-admin-borrado-extraordinario").className = "admin-tab"+(panel==="borrado-extraordinario"?" activo":"");
   if(panel === "registros"){
     if(!document.getElementById("admin-fecha-registros").value){
@@ -2442,6 +2493,10 @@ function mostrarPanelAdmin(panel){
     }
     buscarHistorialPendientes();
   }
+  if(panel === "dias-no-lectivos"){
+    calLectivoSeleccion = {inicio:null, fin:null};
+    pintarCalendarioDiasLectivos();
+  }
 }
 document.getElementById("tab-admin-alumnos").addEventListener("click", function(){ mostrarPanelAdmin("alumnos"); });
 document.getElementById("tab-admin-registros").addEventListener("click", function(){ mostrarPanelAdmin("registros"); });
@@ -2449,7 +2504,19 @@ document.getElementById("tab-admin-informes").addEventListener("click", function
 document.getElementById("tab-admin-extraordinarios").addEventListener("click", function(){ mostrarPanelAdmin("extraordinarios"); });
 document.getElementById("tab-admin-dispositivos").addEventListener("click", function(){ mostrarPanelAdmin("dispositivos"); });
 document.getElementById("tab-admin-historial-pendientes").addEventListener("click", function(){ mostrarPanelAdmin("historial-pendientes"); });
+document.getElementById("tab-admin-dias-no-lectivos").addEventListener("click", function(){ mostrarPanelAdmin("dias-no-lectivos"); });
 document.getElementById("tab-admin-borrado-extraordinario").addEventListener("click", function(){ mostrarPanelAdmin("borrado-extraordinario"); });
+
+// "Grupos sin Registros" desde Administrador: acceso directo a la misma ventana que
+// la tarjeta naranja de Inicio, pero disponible en cualquier día del año y a
+// cualquier hora (sin las restricciones de horario/día lectivo que solo controlan
+// cuándo se muestra el AVISO automático en la pantalla principal).
+document.getElementById("tab-admin-sin-registros").addEventListener("click", function(){
+  modalPendientesAbierto = {tipo:"lista", origen:"sinRegistros"};
+  document.getElementById("sin-registros-hoy-fecha-titulo").textContent = fechaBonita();
+  pintarListaGruposHoy("sinRegistros");
+  abrir("modal-sin-registros-hoy");
+});
 document.getElementById("btn-buscar-hist-pend").addEventListener("click", buscarHistorialPendientes);
 
 function buscarHistorialPendientes(){
@@ -2516,6 +2583,173 @@ function buscarHistorialPendientes(){
   });
 }
 var ultimoHistorialPendientes = [];
+
+/* ---------- Días lectivos (calendario, Administrador) ---------- */
+var calLectivoMesActual = (function(){ var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 1); })();
+var calLectivoSeleccion = {inicio:null, fin:null}; // fechas ISO de la selección en curso
+var calLectivoArrastrando = false;
+var MESES_ES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+var DIAS_SEMANA_ES = ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
+
+function fechaISOLocal(anio, mes, dia){
+  return anio+"-"+String(mes+1).padStart(2,"0")+"-"+String(dia).padStart(2,"0");
+}
+
+function pintarCalendarioDiasLectivos(){
+  var cont = document.getElementById("cal-dias-lectivos");
+  if(!cont) return; // el panel de Administrador todavía no se ha construido/abierto
+
+  var anio = calLectivoMesActual.getFullYear();
+  var mes = calLectivoMesActual.getMonth();
+  var primerDiaMes = new Date(anio, mes, 1);
+  var diasEnMes = new Date(anio, mes+1, 0).getDate();
+  // Lunes=0 ... Domingo=6
+  var offset = (primerDiaMes.getDay() + 6) % 7;
+
+  var minFecha = calLectivoSeleccion.inicio && calLectivoSeleccion.fin
+    ? (calLectivoSeleccion.inicio < calLectivoSeleccion.fin ? calLectivoSeleccion.inicio : calLectivoSeleccion.fin)
+    : (calLectivoSeleccion.inicio || null);
+  var maxFecha = calLectivoSeleccion.inicio && calLectivoSeleccion.fin
+    ? (calLectivoSeleccion.inicio > calLectivoSeleccion.fin ? calLectivoSeleccion.inicio : calLectivoSeleccion.fin)
+    : (calLectivoSeleccion.inicio || null);
+
+  var html = '<div class="cal-lectivo-cabecera">'
+    + '<button class="btn" id="btn-cal-mes-anterior" type="button">&larr;</button>'
+    + '<div class="cal-lectivo-titulo">'+MESES_ES[mes]+' de '+anio+'</div>'
+    + '<button class="btn" id="btn-cal-mes-siguiente" type="button">&rarr;</button>'
+    + '</div>';
+  html += '<div class="cal-lectivo-grid cal-lectivo-cabeceras">' + DIAS_SEMANA_ES.map(function(d){ return '<div class="cal-lectivo-diasemana">'+d+'</div>'; }).join("") + '</div>';
+  html += '<div class="cal-lectivo-grid" id="cal-lectivo-dias" style="touch-action:none;">';
+  for(var i=0; i<offset; i++){ html += '<div class="cal-lectivo-celda vacia"></div>'; }
+  for(var dia=1; dia<=diasEnMes; dia++){
+    var fechaISO = fechaISOLocal(anio, mes, dia);
+    var dow = new Date(anio, mes, dia).getDay();
+    var esFinde = (dow === 0 || dow === 6);
+    var esNoLectivo = !!diasNoLectivosMap[fechaISO];
+    var enSeleccion = minFecha && maxFecha && fechaISO >= minFecha && fechaISO <= maxFecha;
+    var clases = "cal-lectivo-celda";
+    if(esFinde) clases += " finde";
+    if(esNoLectivo) clases += " no-lectivo";
+    if(enSeleccion && !esFinde) clases += " seleccionada";
+    html += '<div class="'+clases+'" data-fecha="'+fechaISO+'" data-finde="'+(esFinde?"1":"0")+'">'+dia+'</div>';
+  }
+  html += '</div>';
+  html += '<div class="cal-lectivo-leyenda">'
+    + '<span><i class="cal-lectivo-muestra no-lectivo"></i> No lectivo</span>'
+    + '<span><i class="cal-lectivo-muestra finde"></i> Fin de semana (automático)</span>'
+    + '<span><i class="cal-lectivo-muestra seleccionada"></i> Selección actual</span>'
+    + '</div>';
+  cont.innerHTML = html;
+
+  document.getElementById("btn-cal-mes-anterior").addEventListener("click", function(){
+    calLectivoMesActual = new Date(anio, mes-1, 1);
+    calLectivoSeleccion = {inicio:null, fin:null};
+    pintarCalendarioDiasLectivos();
+  });
+  document.getElementById("btn-cal-mes-siguiente").addEventListener("click", function(){
+    calLectivoMesActual = new Date(anio, mes+1, 1);
+    calLectivoSeleccion = {inicio:null, fin:null};
+    pintarCalendarioDiasLectivos();
+  });
+
+  var celdas = cont.querySelectorAll(".cal-lectivo-celda[data-fecha]");
+  celdas.forEach(function(celda){
+    if(celda.getAttribute("data-finde") === "1") return; // los fines de semana no se pueden seleccionar
+    celda.addEventListener("pointerdown", function(e){
+      e.preventDefault();
+      calLectivoArrastrando = true;
+      var f = celda.getAttribute("data-fecha");
+      calLectivoSeleccion = {inicio:f, fin:f};
+      pintarCalendarioDiasLectivos();
+    });
+    celda.addEventListener("pointerenter", function(){
+      if(!calLectivoArrastrando) return;
+      calLectivoSeleccion.fin = celda.getAttribute("data-fecha");
+      pintarCalendarioDiasLectivos();
+    });
+  });
+
+  actualizarAccionesSeleccionLectivos();
+  pintarListaDiasNoLectivos();
+}
+
+document.addEventListener("pointerup", function(){ calLectivoArrastrando = false; });
+
+function actualizarAccionesSeleccionLectivos(){
+  var acciones = document.getElementById("cal-dias-lectivos-acciones");
+  if(!acciones) return;
+  if(!calLectivoSeleccion.inicio){
+    acciones.classList.add("hidden");
+    return;
+  }
+  var minFecha = calLectivoSeleccion.inicio < calLectivoSeleccion.fin ? calLectivoSeleccion.inicio : calLectivoSeleccion.fin;
+  var maxFecha = calLectivoSeleccion.inicio > calLectivoSeleccion.fin ? calLectivoSeleccion.inicio : calLectivoSeleccion.fin;
+  var totalDias = 0, d = new Date(minFecha+"T00:00:00");
+  var fin = new Date(maxFecha+"T00:00:00");
+  while(d <= fin){
+    var dow = d.getDay();
+    if(dow !== 0 && dow !== 6) totalDias++;
+    d.setDate(d.getDate()+1);
+  }
+  acciones.classList.remove("hidden");
+  document.getElementById("cal-dias-lectivos-resumen").textContent =
+    minFecha === maxFecha ? "1 día seleccionado" : (totalDias+" días (fines de semana ya excluidos)");
+}
+
+document.getElementById("btn-cancelar-seleccion-lectivos").addEventListener("click", function(){
+  calLectivoSeleccion = {inicio:null, fin:null};
+  pintarCalendarioDiasLectivos();
+});
+
+document.getElementById("btn-marcar-no-lectivos").addEventListener("click", function(){
+  if(!calLectivoSeleccion.inicio) return;
+  var minFecha = calLectivoSeleccion.inicio < calLectivoSeleccion.fin ? calLectivoSeleccion.inicio : calLectivoSeleccion.fin;
+  var maxFecha = calLectivoSeleccion.inicio > calLectivoSeleccion.fin ? calLectivoSeleccion.inicio : calLectivoSeleccion.fin;
+  var fechas = [];
+  var d = new Date(minFecha+"T00:00:00");
+  var fin = new Date(maxFecha+"T00:00:00");
+  while(d <= fin){
+    var dow = d.getDay();
+    if(dow !== 0 && dow !== 6) fechas.push(d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"));
+    d.setDate(d.getDate()+1);
+  }
+  if(fechas.length === 0){ toast("Esa selección no incluye ningún día lectivo"); return; }
+  conCarga(function(){
+    var batch = db.batch();
+    fechas.forEach(function(f){ batch.set(diasNoLectivosCol.doc(f), {fecha:f}); });
+    return batch.commit();
+  }).then(function(){
+    calLectivoSeleccion = {inicio:null, fin:null};
+    toast(fechas.length===1 ? "Día marcado como no lectivo" : (fechas.length+" días marcados como no lectivos"));
+    pintarCalendarioDiasLectivos();
+  });
+});
+
+function pintarListaDiasNoLectivos(){
+  var cont = document.getElementById("lista-dias-no-lectivos");
+  if(!cont) return;
+  var ordenados = diasNoLectivos.slice().sort(function(a,b){ return a.id.localeCompare(b.id); });
+  if(ordenados.length === 0){
+    cont.innerHTML = '<p style="color:var(--ink-soft); font-size:14px;">Todavía no has marcado ningún día como no lectivo.</p>';
+    return;
+  }
+  cont.innerHTML = ordenados.map(function(x){
+    var d = new Date(x.id+"T00:00:00");
+    var texto = d.toLocaleDateString("es-ES", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+    return '<span class="chip-fecha-pendiente" data-fecha="'+x.id+'">'
+      + '<span style="text-transform:capitalize;">'+texto+'</span>'
+      + '<button type="button" title="Deshacer: volver a marcar como lectivo" data-deshacer="'+x.id+'">✕ Deshacer</button>'
+      + '</span>';
+  }).join("");
+  cont.querySelectorAll("[data-deshacer]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var fecha = btn.getAttribute("data-deshacer");
+      conCarga(function(){ return diasNoLectivosCol.doc(fecha).delete(); }).then(function(){
+        toast("Día vuelto a marcar como lectivo");
+      });
+    });
+  });
+}
 
 /* ---------- BORRADO EXTRAORDINARIO (requiere clave de administrador) ---------- */
 function umbralDosAniosISO(){
@@ -3275,14 +3509,28 @@ function calcularGruposSinRegistrosHoy(){
   return lista;
 }
 
-// La tarjeta naranja solo debe verse en días hábiles (lunes a viernes) y a partir
-// de las 13:30, hora del dispositivo.
-function esHoraDeAvisoSinRegistros(){
-  var d = new Date();
+// Un día es lectivo si no es sábado/domingo y no ha sido marcado a mano como "no
+// lectivo" desde Administrador → Días lectivos (vacaciones, festivos locales…).
+function esDiaLectivo(fechaISO){
+  var d = new Date(fechaISO+"T00:00:00");
   var diaSemana = d.getDay(); // 0=domingo … 6=sábado
   if(diaSemana === 0 || diaSemana === 6) return false;
+  if(diasNoLectivosMap[fechaISO]) return false;
+  return true;
+}
+
+// El AVISO AUTOMÁTICO de la tarjeta naranja (en la pantalla de Inicio) solo debe
+// verse en días lectivos: de lunes a jueves a partir de las 13:30, y los viernes a
+// partir de las 12:45. Esto NO afecta al acceso manual desde Administrador → Grupos
+// sin Registros, que sigue disponible cualquier día y a cualquier hora.
+function esHoraDeAvisoSinRegistros(){
+  var hoy = hoyISO();
+  if(!esDiaLectivo(hoy)) return false;
+  var d = new Date();
+  var diaSemana = d.getDay(); // 1=lunes … 5=viernes (ya se descartaron 0 y 6 arriba)
   var minutos = d.getHours()*60 + d.getMinutes();
-  return minutos >= (13*60 + 30);
+  var umbral = (diaSemana === 5) ? (12*60 + 45) : (13*60 + 30);
+  return minutos >= umbral;
 }
 
 // null | {tipo:"lista", origen:"pendientes"|"sinRegistros"} | {tipo:"detalle", origen, nivel, grupo}
