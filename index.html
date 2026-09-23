@@ -357,13 +357,18 @@
   .aviso-pendiente ul span{color:var(--ink-soft); font-weight:400;}
   .aviso-pendiente p{margin:0; font-size:13px; color:var(--ink-soft);}
   .fila-botones-principales{display:flex; align-items:center; gap:26px; flex-wrap:wrap; justify-content:center;}
-  .tarjeta-pendientes-hoy{
+  .avisos-grupos-hoy{display:flex; flex-direction:column; gap:14px; align-items:stretch; margin-top:14px; width:100%; max-width:420px;}
+  .fila-registros-hoy{display:flex; justify-content:center; padding:4px 0 2px 0;}
+  .tarjeta-pendientes-hoy, .tarjeta-sin-registros-hoy{
     background:var(--accent); color:#fff; text-align:center; padding:24px 32px; cursor:pointer;
     border-radius:20px; box-shadow:0 10px 30px rgba(179,63,63,0.35); min-width:200px;
   }
-  .tarjeta-pendientes-hoy .tph-titulo{font-family:Georgia,serif; font-size:19px; font-weight:bold;}
-  .tarjeta-pendientes-hoy .tph-fecha{font-size:13.5px; margin-top:6px; opacity:0.92;}
-  .tarjeta-pendientes-hoy:active{transform:scale(0.98);}
+  .tarjeta-pendientes-hoy .tph-titulo, .tarjeta-sin-registros-hoy .tph-titulo{font-family:Georgia,serif; font-size:19px; font-weight:bold;}
+  .tarjeta-pendientes-hoy .tph-fecha, .tarjeta-sin-registros-hoy .tph-fecha{font-size:13.5px; margin-top:6px; opacity:0.92;}
+  .tarjeta-pendientes-hoy:active, .tarjeta-sin-registros-hoy:active{transform:scale(0.98);}
+  .tarjeta-sin-registros-hoy{
+    background:#D97B0E; box-shadow:0 10px 30px rgba(217,123,14,0.35);
+  }
   .hist-pend-item{
     background:#FBEDED; border:2px solid var(--accent); border-radius:12px; padding:14px 16px; margin-bottom:12px;
   }
@@ -435,20 +440,28 @@
   }
   .modal.modal-wide{max-width:820px;}
   .modal.modal-fullscreen{max-width:100vw; width:100vw; max-height:100vh; height:100vh; border-radius:0;}
+  /* Overlay/modal a pantalla completa pero dejando siempre visible la cabecera de la
+     página principal, usado por las tarjetas de grupos pendientes/sin registros. */
+  .overlay.overlay-bajo-header{
+    top:var(--alto-header, 96px); padding:0; align-items:stretch; justify-content:stretch;
+  }
+  .modal.modal-pantalla-bajo-header{
+    width:100%; max-width:100%; height:100%; max-height:100%; border-radius:0;
+  }
   #modal-administrador{padding:0;}
   .admin-head{background:var(--pine-dark); color:#fff; flex-shrink:0;}
   .admin-head h2{font-family:Georgia,serif;}
   .admin-head .x{color:#fff;}
   .admin-tabs{
-    display:flex; gap:4px; overflow-x:auto; padding:0 20px; background:var(--paper-soft);
-    border-bottom:2px solid var(--line); flex-shrink:0;
+    display:flex; flex-wrap:wrap; gap:4px; padding:6px 16px; background:var(--paper-soft);
+    border-bottom:2px solid var(--line); flex-shrink:0; row-gap:2px;
   }
   .admin-tab{
-    background:none; border:none; padding:14px 18px; cursor:pointer; font-size:14px; font-weight:600;
-    color:var(--ink-soft); white-space:nowrap; display:flex; align-items:center; gap:7px;
-    border-bottom:3px solid transparent; margin-bottom:-2px;
+    background:none; border:none; padding:10px 14px; cursor:pointer; font-size:13.5px; font-weight:600;
+    color:var(--ink-soft); white-space:nowrap; display:flex; align-items:center; gap:6px;
+    border-bottom:3px solid transparent; border-radius:8px 8px 0 0;
   }
-  .admin-tab .icono{font-size:16px;}
+  .admin-tab .icono{font-size:14px;}
   .admin-tab.activo{color:var(--pine-dark); border-bottom-color:var(--pine-dark);}
   .admin-body{flex:1; overflow-y:auto; padding:26px 24px; max-width:1100px; margin:0 auto; width:100%;}
   .modal-head{
@@ -521,12 +534,13 @@
     #print-area{position:absolute; top:0; left:0; width:100%; padding:20px;}
   }
 
-  /* Botón flotante "Registros de hoy" */
+  /* Botón "Registros de hoy" (en el flujo normal de la pantalla de inicio, no flotante,
+     para que nunca pueda solaparse con otros botones o tarjetas). */
   .btn-flotante-hoy{
-    position:fixed; right:calc(20px + env(safe-area-inset-right)); bottom:calc(20px + env(safe-area-inset-bottom));
+    position:static;
     background:var(--ok); color:#fff; border:none; border-radius:30px;
     padding:14px 22px; font-size:14.5px; font-weight:600; cursor:pointer;
-    box-shadow:0 8px 22px rgba(62,140,74,0.4); z-index:30;
+    box-shadow:0 8px 22px rgba(62,140,74,0.4);
     display:flex; align-items:center; gap:8px;
   }
   .btn-flotante-hoy:active{transform:scale(0.97);}
@@ -578,6 +592,9 @@
     .row .name{font-size:15px;}
     .btn-flotante-hoy{padding:11px 16px; font-size:13px;}
     .modal{max-height:94vh;}
+    .admin-tabs{padding:6px 10px; gap:2px;}
+    .admin-tab{padding:8px 10px; font-size:12.5px; gap:4px;}
+    .admin-tab .icono{font-size:14px;}
   }
 
   /* Pantallas muy estrechas: dejamos que cada fila pase a dos líneas en vez de desbordar */
@@ -612,7 +629,7 @@
     .modal-head{padding:12px 18px;}
     .modal-body{padding:14px 18px;}
     .modal-foot{padding:10px 18px;}
-    .btn-flotante-hoy{padding:8px 14px; font-size:12px; bottom:8px; right:8px;}
+    .btn-flotante-hoy{padding:8px 14px; font-size:12px;}
   }
 
   /* Pantallas grandes (tablet en horizontal, monitor de escritorio): un poco más
@@ -764,11 +781,20 @@
         <div class="inicio-titulo-linea1">Servicio de Comedor</div>
         <div class="inicio-titulo-linea2">Echeyde La Laguna</div>
       </div>
+      <div class="fila-registros-hoy">
+        <button class="btn-flotante-hoy" id="btn-registros-hoy"><span class="punto"></span>Registros de hoy · <span id="fecha-btn-registros-hoy"></span></button>
+      </div>
       <div class="fila-botones-principales">
         <button class="btn-gigante" id="btn-ir-pasar-lista">Pasar Lista</button>
+      </div>
+      <div class="avisos-grupos-hoy">
         <div class="tarjeta-pendientes-hoy hidden" id="banner-pendientes-hoy">
-          <div class="tph-titulo">⚠ Grupos pendientes hoy</div>
+          <div class="tph-titulo">⚠ Grupos con Registros Pendientes</div>
           <div class="tph-fecha" id="banner-pendientes-hoy-fecha"></div>
+        </div>
+        <div class="tarjeta-sin-registros-hoy hidden" id="banner-sin-registros-hoy">
+          <div class="tph-titulo">⚠ Grupos SIN Registros</div>
+          <div class="tph-fecha" id="banner-sin-registros-hoy-fecha"></div>
         </div>
       </div>
       <div class="inicio-secundarios">
@@ -777,8 +803,6 @@
       </div>
     </div>
   </div>
-
-  <button class="btn-flotante-hoy" id="btn-registros-hoy"><span class="punto"></span>Registros de hoy · <span id="fecha-btn-registros-hoy"></span></button>
 
   <div class="vista hidden" id="vista-etapa">
     <div class="paso-header"><button class="btn-volver" id="btn-etapa-volver">&larr; Volver</button><h2>Elige la etapa</h2></div>
@@ -1193,9 +1217,9 @@
 </div>
 
 <!-- MODAL: detalle de grupos pendientes hoy -->
-<div class="overlay hidden" id="modal-pendientes-hoy">
-  <div class="modal modal-wide">
-    <div class="modal-head"><h2>Grupos pendientes hoy · <span id="pendientes-hoy-fecha-titulo"></span></h2><button class="x" data-close>&times;</button></div>
+<div class="overlay overlay-bajo-header hidden" id="modal-pendientes-hoy">
+  <div class="modal modal-pantalla-bajo-header">
+    <div class="modal-head"><h2 id="pendientes-hoy-titulo">Grupos pendientes hoy · <span id="pendientes-hoy-fecha-titulo"></span></h2><button class="x" data-close>&times;</button></div>
     <div class="modal-body">
       <div id="pendientes-hoy-lista"></div>
     </div>
@@ -1205,14 +1229,15 @@
   </div>
 </div>
 
-<div class="overlay hidden" id="modal-pendientes-hoy-detalle">
-  <div class="modal">
+<div class="overlay overlay-bajo-header hidden" id="modal-pendientes-hoy-detalle">
+  <div class="modal modal-pantalla-bajo-header">
     <div class="modal-head"><h2 id="pendientes-hoy-detalle-titulo"></h2><button class="x" data-close>&times;</button></div>
     <div class="modal-body">
       <div id="pendientes-hoy-detalle-lista"></div>
     </div>
     <div class="modal-foot">
       <button class="btn" id="btn-pendientes-hoy-volver">&larr; Volver a los grupos</button>
+      <button class="btn btn-accent" id="btn-pendientes-hoy-detalle-finalizar">Finalizar y validar</button>
     </div>
   </div>
 </div>
@@ -1720,6 +1745,21 @@ setInterval(function(){
   document.getElementById("hoy-hora").textContent = new Date().toLocaleTimeString("es-ES", {hour:"2-digit", minute:"2-digit"});
 }, 30000);
 
+/* Mide la altura real de la cabecera para que los modales "a pantalla completa pero con
+   la cabecera visible" (grupos pendientes / sin registros) sepan exactamente dónde empezar. */
+function actualizarAlturaHeader(){
+  var header = document.querySelector("header");
+  if(!header) return;
+  document.documentElement.style.setProperty("--alto-header", header.offsetHeight+"px");
+}
+actualizarAlturaHeader();
+window.addEventListener("load", actualizarAlturaHeader);
+window.addEventListener("resize", actualizarAlturaHeader);
+window.addEventListener("orientationchange", function(){
+  actualizarAlturaHeader();
+  setTimeout(actualizarAlturaHeader, 300);
+});
+
 /* ---------- Navegación por vistas (Inicio → Etapa → Grupo → Lista) ---------- */
 function mostrarVista(nombre){
   vistaActual = nombre;
@@ -1866,45 +1906,9 @@ function pintarLista(){
     return;
   }
 
-  var chipClass = {Infantil:"chip-infantil", Primaria:"chip-primaria", Secundaria:"chip-secundaria", AulaEnclave:"chip-enclave"};
   var html = "";
   lista.forEach(function(a){
-    var yaRegistrado = registradosHoyMap[a.id];
-    var sesion = sessionMarcados[a.id];
-    var noInscrito = a.estado === "NO";
-    var estadoAsistencia = yaRegistrado ? (yaRegistrado.estadoAsistencia||"presente") : (sesion ? sesion.estadoAsistencia : null);
-    var extraHoy = noInscrito ? accesoExtraHoy(a.id) : null;
-
-    var claseFila;
-    var estadoTexto;
-    if(estadoAsistencia === "presente"){
-      claseFila = noInscrito ? "no-inscrito pendiente" : "pendiente";
-      estadoTexto = yaRegistrado ? ("✓ Presente (guardado "+yaRegistrado.hora+")") : "✓ Presente (pendiente de guardar)";
-    } else if(estadoAsistencia === "ausente"){
-      claseFila = "ausente";
-      estadoTexto = yaRegistrado ? "✗ Ausente (guardado)" : "✗ Ausente (pendiente de guardar)";
-    } else if(extraHoy){
-      claseFila = "extraordinario";
-      estadoTexto = "Acceso extraordinario previsto hoy · toca ✓ para confirmar";
-    } else if(noInscrito){
-      claseFila = "no-inscrito";
-      estadoTexto = "No inscrito · toca ✓ si asiste hoy";
-    } else {
-      claseFila = "requiere-accion";
-      estadoTexto = "Pendiente de marcar asistencia";
-    }
-
-    var mostrarX = !noInscrito; // el aspa solo aplica a inscritos
-    html += '<div class="row '+claseFila+'" data-id="'+a.id+'">'
-      + '<span class="chip '+chipClass[a.nivel]+'">'+NIVEL_LABEL[a.nivel]+'</span>'
-      + (noInscrito ? '<span class="chip chip-no-inscrito">No inscrito</span>' : '')
-      + '<span class="name">'+nombreMostrar(a)+(a.grupo ? '<span class="sub">'+a.grupo+'</span>' : '')+'</span>'
-      + '<span class="status">'+estadoTexto+'</span>'
-      + '<span class="acciones">'
-      +   '<button class="btn-accion btn-check '+(estadoAsistencia==="presente"?"activo":"")+'" data-id="'+a.id+'" data-accion="presente" title="Marcar presente">✓</button>'
-      +   (mostrarX ? '<button class="btn-accion btn-x '+(estadoAsistencia==="ausente"?"activo":"")+'" data-id="'+a.id+'" data-accion="ausente" title="Marcar ausente">✗</button>' : '')
-      + '</span>'
-      + '</div>';
+    html += filaAlumnoHTML(a, hoy, registradosHoyMap);
   });
   cont.innerHTML = html;
 
@@ -1916,6 +1920,50 @@ function pintarLista(){
   });
 
   pintarResumenSesion();
+}
+
+/* Construye el HTML de una fila de alumno (chip de etapa, nombre, estado y botones ✓/✗).
+   Se usa tanto en la lista normal de "Pasar lista" como en el detalle de grupos
+   pendientes/sin registros de la pantalla de Inicio, para que ambos flujos se vean y
+   se comporten exactamente igual. */
+function filaAlumnoHTML(a, hoy, registradosHoyMap){
+  var chipClass = {Infantil:"chip-infantil", Primaria:"chip-primaria", Secundaria:"chip-secundaria", AulaEnclave:"chip-enclave"};
+  var yaRegistrado = registradosHoyMap[a.id];
+  var sesion = sessionMarcados[a.id];
+  var noInscrito = a.estado === "NO";
+  var estadoAsistencia = yaRegistrado ? (yaRegistrado.estadoAsistencia||"presente") : (sesion ? sesion.estadoAsistencia : null);
+  var extraHoy = noInscrito ? accesoExtraHoy(a.id) : null;
+
+  var claseFila;
+  var estadoTexto;
+  if(estadoAsistencia === "presente"){
+    claseFila = noInscrito ? "no-inscrito pendiente" : "pendiente";
+    estadoTexto = yaRegistrado ? ("✓ Presente (guardado "+yaRegistrado.hora+")") : "✓ Presente (pendiente de guardar)";
+  } else if(estadoAsistencia === "ausente"){
+    claseFila = "ausente";
+    estadoTexto = yaRegistrado ? "✗ Ausente (guardado)" : "✗ Ausente (pendiente de guardar)";
+  } else if(extraHoy){
+    claseFila = "extraordinario";
+    estadoTexto = "Acceso extraordinario previsto hoy · toca ✓ para confirmar";
+  } else if(noInscrito){
+    claseFila = "no-inscrito";
+    estadoTexto = "No inscrito · toca ✓ si asiste hoy";
+  } else {
+    claseFila = "requiere-accion";
+    estadoTexto = "Pendiente de marcar asistencia";
+  }
+
+  var mostrarX = !noInscrito; // el aspa solo aplica a inscritos
+  return '<div class="row '+claseFila+'" data-id="'+a.id+'">'
+    + '<span class="chip '+chipClass[a.nivel]+'">'+NIVEL_LABEL[a.nivel]+'</span>'
+    + (noInscrito ? '<span class="chip chip-no-inscrito">No inscrito</span>' : '')
+    + '<span class="name">'+nombreMostrar(a)+(a.grupo ? '<span class="sub">'+a.grupo+'</span>' : '')+'</span>'
+    + '<span class="status">'+estadoTexto+'</span>'
+    + '<span class="acciones">'
+    +   '<button class="btn-accion btn-check '+(estadoAsistencia==="presente"?"activo":"")+'" data-id="'+a.id+'" data-accion="presente" title="Marcar presente">✓</button>'
+    +   (mostrarX ? '<button class="btn-accion btn-x '+(estadoAsistencia==="ausente"?"activo":"")+'" data-id="'+a.id+'" data-accion="ausente" title="Marcar ausente">✗</button>' : '')
+    + '</span>'
+    + '</div>';
 }
 
 function pintarResumenSesion(){
@@ -1945,7 +1993,7 @@ function onTapAccion(alumnoId, accion){
   if(actual && actual.estadoAsistencia === accion){
     // tocar el mismo botón otra vez desmarca (vuelve a pendiente)
     delete sessionMarcados[alumnoId];
-    pintarLista();
+    refrescarTrasMarcar();
     return;
   }
 
@@ -1961,7 +2009,20 @@ function onTapAccion(alumnoId, accion){
   }
 
   sessionMarcados[alumnoId] = {estadoAsistencia:accion, observacion:null, duplicado:false};
-  pintarLista();
+  refrescarTrasMarcar();
+}
+
+/* Tras marcar (o desmarcar) la asistencia de un alumno, refresca cualquier pantalla que
+   pueda estar mostrando su fila: la lista normal de "Pasar lista" y/o el detalle de
+   grupo pendiente/sin registros abierto desde la pantalla de Inicio. */
+function refrescarTrasMarcar(){
+  var modalDetalle = document.getElementById("modal-pendientes-hoy-detalle");
+  if(modalDetalle && !modalDetalle.classList.contains("hidden")){
+    pintarDetallePendienteGrupo();
+  }
+  if(vistaActual === "lista"){
+    pintarLista();
+  }
 }
 
 document.getElementById("btn-confirmar-observacion").addEventListener("click", function(){
@@ -1970,7 +2031,7 @@ document.getElementById("btn-confirmar-observacion").addEventListener("click", f
   sessionMarcados[pendienteObservacion] = {estadoAsistencia:"presente", observacion:texto, duplicado:false};
   pendienteObservacion = null;
   cerrar("modal-observacion");
-  pintarLista();
+  refrescarTrasMarcar();
 });
 
 /* ---------- Modales genéricos ---------- */
@@ -2292,7 +2353,7 @@ document.getElementById("btn-autorizar").addEventListener("click", function(){
   pendienteDuplicado = null;
   cerrar("modal-admin");
   sessionMarcados[alumnoPendiente] = {estadoAsistencia:accion, observacion:null, duplicado:true};
-  pintarLista();
+  refrescarTrasMarcar();
   toast("Duplicado añadido a la sesión (pendiente de guardar)");
 });
 
@@ -3185,8 +3246,10 @@ document.getElementById("banner-extra-hoy").addEventListener("click", function()
   abrir("modal-extra-hoy-detalle");
 });
 
-/* ---------- Grupos pendientes hoy (tarjeta roja en Inicio) ---------- */
-function calcularGruposPendientesHoy(){
+/* ---------- Grupos pendientes / sin registros hoy (tarjetas roja y naranja en Inicio) ---------- */
+// Cálculo base compartido: para cada grupo con alumnos inscritos, si hoy se le ha
+// pasado lista ("tocado") y a quiénes en concreto les falta todavía por marcar.
+function calcularEstadoGruposHoy(){
   var hoy = hoyISO();
   var registradosHoyIds = {};
   registros.filter(function(r){ return r.fecha===hoy; }).forEach(function(r){ registradosHoyIds[r.alumnoId] = true; });
@@ -3199,67 +3262,134 @@ function calcularGruposPendientesHoy(){
     if(a.estado === "SI") grupos[clave].inscritos.push(a);
     if(registradosHoyIds[a.id]) grupos[clave].tocado = true;
   });
+  return {grupos:grupos, registradosHoyIds:registradosHoyIds};
+}
 
+// Tarjeta roja: grupos a los que YA se les ha pasado lista hoy, pero a los que aún
+// les faltan alumnos inscritos por marcar.
+function calcularGruposPendientesHoy(){
+  var estado = calcularEstadoGruposHoy();
   var pendientes = [];
-  Object.keys(grupos).forEach(function(clave){
-    var g = grupos[clave];
+  Object.keys(estado.grupos).forEach(function(clave){
+    var g = estado.grupos[clave];
     if(!g.tocado) return; // grupo al que hoy no se le ha pasado lista todavía: no cuenta como "pendiente"
-    var faltan = g.inscritos.filter(function(a){ return !registradosHoyIds[a.id]; });
+    var faltan = g.inscritos.filter(function(a){ return !estado.registradosHoyIds[a.id]; });
     if(faltan.length > 0) pendientes.push({nivel:g.nivel, grupo:g.grupo, faltan:faltan});
   });
   return pendientes;
 }
 
-var modalPendientesAbierto = null; // null | "lista" | {nivel, grupo} del detalle abierto
+// Tarjeta naranja: grupos con alumnos inscritos a los que NO se les ha pasado lista
+// en absoluto hoy (ni un solo registro).
+function calcularGruposSinRegistrosHoy(){
+  var estado = calcularEstadoGruposHoy();
+  var sinRegistros = [];
+  Object.keys(estado.grupos).forEach(function(clave){
+    var g = estado.grupos[clave];
+    if(g.tocado) return;
+    if(g.inscritos.length > 0) sinRegistros.push({nivel:g.nivel, grupo:g.grupo, faltan:g.inscritos.slice()});
+  });
+  return sinRegistros;
+}
+
+// Días hábiles (de momento, fin de semana = no lectivo). Se usa solo para decidir cuándo
+// aparece SOLA la tarjeta naranja: los datos de "grupos sin registros" en sí se calculan
+// siempre, para que desde Administrador se pueda acceder a ellos cualquier día del año.
+function esDiaLectivo(fechaISO){
+  var d = new Date(fechaISO+"T00:00:00");
+  var diaSemana = d.getDay();
+  return diaSemana !== 0 && diaSemana !== 6;
+}
+function esHoraDeAvisoSinRegistros(){
+  var hoy = hoyISO();
+  if(!esDiaLectivo(hoy)) return false;
+  var d = new Date();
+  var diaSemana = d.getDay();
+  var minutos = d.getHours()*60 + d.getMinutes();
+  var umbral = (diaSemana === 5) ? (12*60 + 45) : (13*60 + 30); // viernes 12:45, resto 13:30
+  return minutos >= umbral;
+}
+
+// null | {tipo:"lista", origen:"pendientes"|"sinRegistros"} | {tipo:"detalle", origen, nivel, grupo}
+var modalPendientesAbierto = null;
+
+var TITULOS_AVISO_GRUPOS = {
+  pendientes: "Grupos con Registros Pendientes",
+  sinRegistros: "Grupos SIN Registros"
+};
 
 function pintarBannerPendientesHoy(){
-  var banner = document.getElementById("banner-pendientes-hoy");
   var pendientes = calcularGruposPendientesHoy();
+  var sinRegistros = calcularGruposSinRegistrosHoy();
+
+  var bannerPend = document.getElementById("banner-pendientes-hoy");
   if(pendientes.length === 0){
-    banner.classList.add("hidden");
+    bannerPend.classList.add("hidden");
   } else {
     document.getElementById("banner-pendientes-hoy-fecha").textContent = fechaBonita();
-    banner.classList.remove("hidden");
+    bannerPend.classList.remove("hidden");
+  }
+
+  // La tarjeta naranja solo se muestra automáticamente en horario/días lectivos; los
+  // datos que representa (calcularGruposSinRegistrosHoy) siguen calculándose siempre,
+  // para que el administrador pueda acceder a ellos en cualquier momento desde su panel.
+  var bannerSinReg = document.getElementById("banner-sin-registros-hoy");
+  if(sinRegistros.length === 0 || !esHoraDeAvisoSinRegistros()){
+    bannerSinReg.classList.add("hidden");
+  } else {
+    document.getElementById("banner-sin-registros-hoy-fecha").textContent = fechaBonita();
+    bannerSinReg.classList.remove("hidden");
   }
 
   // Auto-actualización: si hay una de estas ventanas abierta ahora mismo (en este
   // dispositivo o en cualquier otro que esté sincronizado), se refresca su contenido
   // solo, sin que el usuario tenga que cerrar y volver a abrir nada.
-  if(modalPendientesAbierto === "lista" && !document.getElementById("modal-pendientes-hoy").classList.contains("hidden")){
-    pintarListaPendientesHoy(pendientes);
-  } else if(modalPendientesAbierto && modalPendientesAbierto !== "lista" && !document.getElementById("modal-pendientes-hoy-detalle").classList.contains("hidden")){
-    var sigue = pendientes.find(function(p){ return p.nivel===modalPendientesAbierto.nivel && p.grupo===modalPendientesAbierto.grupo; });
+  if(!modalPendientesAbierto) return;
+  var datos = modalPendientesAbierto.origen === "sinRegistros" ? sinRegistros : pendientes;
+  if(modalPendientesAbierto.tipo === "lista" && !document.getElementById("modal-pendientes-hoy").classList.contains("hidden")){
+    pintarListaGruposHoy(modalPendientesAbierto.origen, datos);
+  } else if(modalPendientesAbierto.tipo === "detalle" && !document.getElementById("modal-pendientes-hoy-detalle").classList.contains("hidden")){
+    var sigue = datos.find(function(p){ return p.nivel===modalPendientesAbierto.nivel && p.grupo===modalPendientesAbierto.grupo; });
     if(sigue){
-      pintarDetallePendienteGrupo(sigue);
+      pintarDetallePendienteGrupo();
     } else {
       // Ese grupo concreto ya se completó: volvemos automáticamente a la lista
       cerrar("modal-pendientes-hoy-detalle");
-      modalPendientesAbierto = "lista";
-      abrir("modal-pendientes-hoy");
-      pintarListaPendientesHoy(pendientes);
+      abrirListaGruposHoy(modalPendientesAbierto.origen);
     }
   }
 }
 
-function pintarListaPendientesHoy(pendientes){
-  pendientes = pendientes || calcularGruposPendientesHoy();
+function abrirListaGruposHoy(origen){
+  modalPendientesAbierto = {tipo:"lista", origen:origen};
+  document.getElementById("pendientes-hoy-titulo").innerHTML =
+    (TITULOS_AVISO_GRUPOS[origen]||"Grupos") + ' · <span id="pendientes-hoy-fecha-titulo">'+fechaBonita()+'</span>';
+  pintarListaGruposHoy(origen);
+  abrir("modal-pendientes-hoy");
+}
+
+function pintarListaGruposHoy(origen, datos){
+  datos = datos || (origen === "sinRegistros" ? calcularGruposSinRegistrosHoy() : calcularGruposPendientesHoy());
   var cont = document.getElementById("pendientes-hoy-lista");
-  if(pendientes.length === 0){
-    cont.innerHTML = '<div class="empty-state"><h3>Ya no quedan grupos pendientes</h3><p>Todos los grupos a los que se ha pasado lista hoy están completos.</p></div>';
+  if(datos.length === 0){
+    cont.innerHTML = origen === "sinRegistros"
+      ? '<div class="empty-state"><h3>Todos los grupos tienen ya algún registro</h3><p>Ningún grupo con alumnos inscritos se ha quedado hoy sin registrar.</p></div>'
+      : '<div class="empty-state"><h3>Ya no quedan grupos pendientes</h3><p>Todos los grupos a los que se ha pasado lista hoy están completos.</p></div>';
     return;
   }
   var claseEtapaCol = {Infantil:"infantil", Primaria:"primaria", Secundaria:"secundaria", AulaEnclave:"enclave"};
+  var etiquetaCifra = origen === "sinRegistros" ? "sin registrar" : "por marcar";
   var html = '<div class="columnas-etapas-hoy">';
   NIVELES.forEach(function(niv){
-    var deEsteNivel = pendientes.filter(function(p){ return p.nivel === niv; });
+    var deEsteNivel = datos.filter(function(p){ return p.nivel === niv; });
     html += '<div class="columna-etapa-hoy '+claseEtapaCol[niv]+'"><h3>'+NIVEL_LABEL[niv]+'</h3>';
     if(deEsteNivel.length === 0){
-      html += '<p class="sin-grupos">Sin pendientes</p>';
+      html += '<p class="sin-grupos">Sin grupos</p>';
     } else {
       deEsteNivel.forEach(function(p){
         html += '<div class="tarjeta-grupo-hoy tarjeta-grupo-pendiente" data-nivel="'+p.nivel+'" data-grupo="'+p.grupo+'">'
           + '<h4>'+(p.grupo||"—")+'</h4>'
-          + '<div class="cifras"><span style="color:var(--accent-dark);"><b>'+p.faltan.length+'</b> por marcar</span></div>'
+          + '<div class="cifras"><span style="color:var(--accent-dark);"><b>'+p.faltan.length+'</b> '+etiquetaCifra+'</span></div>'
           + '</div>';
       });
     }
@@ -3270,35 +3400,76 @@ function pintarListaPendientesHoy(pendientes){
   cont.querySelectorAll(".tarjeta-grupo-pendiente").forEach(function(card){
     card.addEventListener("click", function(){
       var nivel = card.getAttribute("data-nivel"), grupo = card.getAttribute("data-grupo");
-      var p = calcularGruposPendientesHoy().find(function(x){ return x.nivel===nivel && x.grupo===grupo; });
-      if(!p) return;
-      modalPendientesAbierto = {nivel:nivel, grupo:grupo};
-      pintarDetallePendienteGrupo(p);
-      cerrar("modal-pendientes-hoy");
-      abrir("modal-pendientes-hoy-detalle");
+      abrirDetallePendienteGrupo(nivel, grupo, origen);
     });
   });
 }
 
-function pintarDetallePendienteGrupo(p){
-  document.getElementById("pendientes-hoy-detalle-titulo").textContent = (NIVEL_LABEL[p.nivel]||p.nivel)+" · "+p.grupo+" — faltan "+p.faltan.length;
-  document.getElementById("pendientes-hoy-detalle-lista").innerHTML =
-    '<ul style="color:var(--accent-dark); font-weight:600; font-size:15px; padding-left:22px;">'
-    + p.faltan.map(function(a){ return '<li>'+nombreMostrar(a)+'</li>'; }).join("")
-    + '</ul>';
+function abrirDetallePendienteGrupo(nivel, grupo, origen){
+  modalPendientesAbierto = {tipo:"detalle", origen:origen, nivel:nivel, grupo:grupo};
+  // Reutilizamos el mecanismo normal de "Pasar lista" (nivelActivo/grupoActivo +
+  // sessionMarcados) para que marcar aquí funcione exactamente igual y se pueda
+  // validar con el mismo botón "Finalizar y validar".
+  nivelActivo = nivel;
+  grupoActivo = grupo;
+  pintarDetallePendienteGrupo();
+  cerrar("modal-pendientes-hoy");
+  abrir("modal-pendientes-hoy-detalle");
+}
+
+function pintarDetallePendienteGrupo(){
+  if(!modalPendientesAbierto || modalPendientesAbierto.tipo !== "detalle") return;
+  var nivel = modalPendientesAbierto.nivel, grupo = modalPendientesAbierto.grupo;
+  var datos = modalPendientesAbierto.origen === "sinRegistros" ? calcularGruposSinRegistrosHoy() : calcularGruposPendientesHoy();
+  var p = datos.find(function(x){ return x.nivel===nivel && x.grupo===grupo; });
+
+  var hoy = hoyISO();
+  var registradosHoyMap = {};
+  registros.filter(function(r){ return r.fecha===hoy; }).forEach(function(r){ registradosHoyMap[r.alumnoId] = r; });
+
+  var alumnosGrupo = alumnos.filter(function(a){ return a.nivel===nivel && a.grupo===grupo && a.activo!==false && a.estado==="SI"; })
+    .sort(function(a,b){ return nombreMostrar(a).localeCompare(nombreMostrar(b), "es"); });
+
+  var faltanIds = {};
+  (p ? p.faltan : []).forEach(function(a){ faltanIds[a.id] = true; });
+  var faltanRestantes = alumnosGrupo.filter(function(a){ return faltanIds[a.id] && !sessionMarcados[a.id]; }).length;
+
+  document.getElementById("pendientes-hoy-detalle-titulo").textContent =
+    (NIVEL_LABEL[nivel]||nivel)+" · "+grupo+" — "+(faltanRestantes>0 ? (faltanRestantes+" por marcar") : "Grupo completo");
+
+  var cont = document.getElementById("pendientes-hoy-detalle-lista");
+  var btnFinalizar = document.getElementById("btn-pendientes-hoy-detalle-finalizar");
+  if(alumnosGrupo.length === 0){
+    cont.innerHTML = '<div class="empty-state"><h3>Sin alumnos inscritos en este grupo</h3></div>';
+    if(btnFinalizar) btnFinalizar.classList.add("hidden");
+    return;
+  }
+  var html = "";
+  alumnosGrupo.forEach(function(a){
+    html += filaAlumnoHTML(a, hoy, registradosHoyMap);
+  });
+  cont.innerHTML = html;
+  cont.querySelectorAll(".btn-accion").forEach(function(btn){
+    btn.addEventListener("click", function(e){
+      e.stopPropagation();
+      onTapAccion(btn.getAttribute("data-id"), btn.getAttribute("data-accion"));
+    });
+  });
+  if(btnFinalizar) btnFinalizar.classList.toggle("hidden", faltanRestantes === 0 && Object.keys(sessionMarcados).length === 0);
 }
 
 document.getElementById("banner-pendientes-hoy").addEventListener("click", function(){
-  modalPendientesAbierto = "lista";
-  document.getElementById("pendientes-hoy-fecha-titulo").textContent = fechaBonita();
-  pintarListaPendientesHoy();
-  abrir("modal-pendientes-hoy");
+  abrirListaGruposHoy("pendientes");
+});
+document.getElementById("banner-sin-registros-hoy").addEventListener("click", function(){
+  abrirListaGruposHoy("sinRegistros");
 });
 document.getElementById("btn-pendientes-hoy-volver").addEventListener("click", function(){
   cerrar("modal-pendientes-hoy-detalle");
-  modalPendientesAbierto = "lista";
-  abrir("modal-pendientes-hoy");
-  pintarListaPendientesHoy();
+  abrirListaGruposHoy(modalPendientesAbierto ? modalPendientesAbierto.origen : "pendientes");
+});
+document.getElementById("btn-pendientes-hoy-detalle-finalizar").addEventListener("click", function(){
+  iniciarFinalizarValidacion();
 });
 
 /* ---------- Registros de hoy (público, solo consulta) ---------- */
@@ -3426,7 +3597,10 @@ function alumnoTieneDecision(a){
   return yaRegistrado || !!sessionMarcados[a.id];
 }
 
-document.getElementById("btn-pasar-lista").addEventListener("click", function(){
+/* Construye y abre el resumen de validación con lo marcado hasta ahora. La usan tanto
+   el botón "Finalizar y validar" de la pantalla de Pasar Lista como el mismo botón
+   dentro del detalle de un grupo pendiente/sin registros abierto desde Inicio. */
+function iniciarFinalizarValidacion(){
   var ids = Object.keys(sessionMarcados);
   if(ids.length === 0){ toast("No has marcado ningún alumno todavía"); return; }
 
@@ -3479,6 +3653,9 @@ document.getElementById("btn-pasar-lista").addEventListener("click", function(){
   htmlBloques += '</div></div>';
   document.getElementById("resumen-sesion-bloques").innerHTML = htmlBloques;
   abrir("modal-resumen-sesion");
+}
+document.getElementById("btn-pasar-lista").addEventListener("click", function(){
+  iniciarFinalizarValidacion();
 });
 
 document.getElementById("btn-validar-sesion").addEventListener("click", function(){
