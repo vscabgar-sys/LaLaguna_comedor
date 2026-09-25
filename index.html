@@ -96,9 +96,30 @@
     border-right:1px solid var(--line); overflow-y:auto;
   }
   .inicio-sidebar h3{
-    font-family:Georgia,serif; font-size:14px; color:var(--ink-soft); margin:0 0 4px 0;
+    font-family:Georgia,serif; font-size:14px; color:var(--ink-soft); margin:0;
     text-transform:uppercase; letter-spacing:0.5px;
   }
+  .sidebar-cabecera{
+    display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;
+    position:relative; margin-bottom:4px;
+  }
+  .sidebar-buscador{position:relative; flex:1 1 100px; min-width:90px;}
+  .sidebar-buscador input{
+    width:100%; box-sizing:border-box; padding:6px 9px; font-size:12px;
+    border:1px solid var(--line); border-radius:8px; background:var(--paper-raised); color:var(--ink);
+  }
+  .resultados-buscador-sidebar{
+    position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--paper-raised);
+    border:1px solid var(--line); border-radius:10px; box-shadow:0 8px 22px rgba(0,0,0,0.18);
+    z-index:40; max-height:260px; overflow-y:auto; padding:6px;
+  }
+  .resultados-buscador-sidebar .res-item{
+    padding:6px 8px; font-size:12.5px; border-radius:6px; display:flex; justify-content:space-between;
+    gap:8px; align-items:baseline;
+  }
+  .resultados-buscador-sidebar .res-nombre{font-weight:600; flex:1; min-width:0;}
+  .resultados-buscador-sidebar .res-grupo{color:var(--ink-soft); white-space:nowrap;}
+  .resultados-buscador-sidebar .res-vacio{padding:8px; font-size:12.5px; color:var(--ink-soft); text-align:center;}
   .sidebar-etapa{
     border-radius:12px; padding:12px 14px; border-left:5px solid var(--ink-soft); background:var(--paper-soft);
   }
@@ -576,7 +597,7 @@
       width:auto; flex-direction:row; flex-wrap:wrap; border-right:none; border-bottom:1px solid var(--line);
       padding:14px 16px; gap:8px; justify-content:center;
     }
-    .inicio-sidebar h3{width:100%; text-align:center;}
+    .sidebar-cabecera{width:100%; justify-content:center;}
     .sidebar-etapa{flex:1 1 130px; padding:8px 10px;}
   }
 
@@ -775,7 +796,16 @@
 
   <div class="vista" id="vista-inicio">
     <div class="inicio-layout">
-      <div class="inicio-sidebar" id="inicio-sidebar"></div>
+      <div class="inicio-sidebar" id="inicio-sidebar">
+        <div class="sidebar-cabecera">
+          <h3>Alumnado del centro</h3>
+          <div class="sidebar-buscador">
+            <input type="text" id="buscador-alumno-sidebar" placeholder="Buscar apellidos, nombre…" autocomplete="off">
+            <div class="resultados-buscador-sidebar hidden" id="resultados-buscador-sidebar"></div>
+          </div>
+        </div>
+        <div id="sidebar-cifras-etapas"></div>
+      </div>
       <div class="inicio-wrap">
       <div class="inicio-titulo">
         <div class="inicio-titulo-linea1">Servicio de Comedor</div>
@@ -1789,11 +1819,11 @@ function refrescarVistaActual(){
 }
 
 function pintarSidebarInicio(){
-  var cont = document.getElementById("inicio-sidebar");
+  var cont = document.getElementById("sidebar-cifras-etapas");
   if(!cont) return;
   var claseEtapa = {Infantil:"infantil", Primaria:"primaria", Secundaria:"secundaria", AulaEnclave:"enclave"};
   var activos = alumnos.filter(function(a){ return a.activo!==false; });
-  var html = '<h3>Alumnado del centro</h3>';
+  var html = "";
   var totalMatriculados = 0, totalInscritos = 0;
   NIVELES.forEach(function(niv){
     var deEsteNivel = activos.filter(function(a){ return a.nivel===niv; });
@@ -1814,6 +1844,46 @@ function pintarSidebarInicio(){
     + '</div>';
   cont.innerHTML = html;
 }
+
+/* Buscador rápido de alumnos en la barra lateral de Inicio: busca por apellidos y
+   nombre entre TODO el alumnado activo, sin tener en cuenta si está inscrito o no al
+   servicio de comedor, y solo muestra a qué grupo pertenece cada coincidencia. */
+function pintarResultadosBuscadorSidebar(){
+  var cont = document.getElementById("resultados-buscador-sidebar");
+  if(!cont) return;
+  var valor = document.getElementById("buscador-alumno-sidebar").value.trim();
+  if(!valor){
+    cont.classList.add("hidden");
+    cont.innerHTML = "";
+    return;
+  }
+  var q = normaliza(valor);
+  var coincidencias = alumnos.filter(function(a){
+    return a.activo!==false && normaliza(nombreMostrar(a)).indexOf(q) !== -1;
+  }).sort(function(a,b){ return nombreMostrar(a).localeCompare(nombreMostrar(b), "es"); });
+
+  if(coincidencias.length === 0){
+    cont.innerHTML = '<div class="res-vacio">Sin coincidencias</div>';
+  } else {
+    cont.innerHTML = coincidencias.slice(0, 30).map(function(a){
+      return '<div class="res-item"><span class="res-nombre">'+nombreMostrar(a)+'</span>'
+        + '<span class="res-grupo">'+(a.grupo ? (NIVEL_LABEL[a.nivel]+" · "+a.grupo) : (NIVEL_LABEL[a.nivel]+" · sin grupo"))+'</span></div>';
+    }).join("");
+  }
+  cont.classList.remove("hidden");
+}
+document.getElementById("buscador-alumno-sidebar").addEventListener("input", pintarResultadosBuscadorSidebar);
+document.getElementById("buscador-alumno-sidebar").addEventListener("focus", function(){
+  if(this.value.trim()) pintarResultadosBuscadorSidebar();
+});
+document.addEventListener("click", function(e){
+  var cont = document.getElementById("resultados-buscador-sidebar");
+  var input = document.getElementById("buscador-alumno-sidebar");
+  if(!cont || cont.classList.contains("hidden")) return;
+  if(e.target !== input && !cont.contains(e.target)){
+    cont.classList.add("hidden");
+  }
+});
 
 document.getElementById("btn-ir-pasar-lista").addEventListener("click", function(){
   nivelActivo = "Todos";
